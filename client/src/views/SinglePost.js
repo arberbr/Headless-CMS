@@ -49,7 +49,6 @@ class SinglePost extends Component {
 				if (resData.errors) {
 					throw new Error('Fetching post failed!');
 				}
-				console.log(resData);
 				this.setState({
 					title: resData.data.post.title,
 					excerpt: resData.data.post.excerpt,

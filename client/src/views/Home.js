@@ -101,11 +101,7 @@ class Home extends Component {
 	};
 
 	render() {
-		return (
-			<>
-				<PostItems postItems={this.state.posts} />
-			</>
-		);
+		return <PostItems postItems={this.state.posts} />;
 	}
 }
 

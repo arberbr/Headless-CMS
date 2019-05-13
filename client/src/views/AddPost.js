@@ -113,7 +113,6 @@ class AddPost extends Component {
 				<div className="card">
 					<h1>Add Post</h1>
 					<form
-						encType="multipart/form-data"
 						method="POST"
 						action=""
 						onSubmit={event =>

@@ -245,5 +245,38 @@ module.exports = {
 			...user._doc,
 			_id: user._id.toString()
 		};
+	},
+
+	updateUser: async function(args, req) {
+		if (!req.isAuth) {
+			const error = new Error('Not Authenticated!');
+			error.code = 401;
+			throw error;
+		}
+
+		const user = await User.findById(req.userId).populate('posts');
+		if (!user) {
+			const error = new Error('No user was found!');
+			error.statusCode = 404;
+			throw error;
+		}
+
+		if (user._id.toString() !== req.userId.toString()) {
+			const error = new Error('Not Authorized');
+			error.statusCode = 403;
+			throw error;
+		}
+
+		user.fullname = args.userInput.fullname;
+		user.email = args.userInput.email;
+		user.bio = args.userInput.bio;
+		user.avatar = args.userInput.avatar || user.avatar;
+
+		const updatedUser = await user.save();
+
+		return {
+			...updatedUser._doc,
+			_id: updatedUser._id.toString()
+		};
 	}
 };

@@ -23,6 +23,10 @@ h1 {
 	padding-bottom: 20px;
 }
 
+b {
+	font-weight: 600;
+}
+
 form {
 	position: relative;
 	display: block;
@@ -150,6 +154,7 @@ form button:disabled {
 .menu-header li span {
 	color: #000;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 .card-post-item {
@@ -193,6 +198,7 @@ form button:disabled {
 	width: 100px;
 	height: 100px;
 	object-fit: cover;
+	border-radius: 50%;
 }
 
 .user-details .user-info {

@@ -34,6 +34,15 @@ module.exports = buildSchema(`
         email: String!
         fullname: String!
         password: String!
+        bio: String
+        avatar: String
+    }
+
+    input UserAccountData {
+        email: String!
+        fullname: String!
+        bio: String
+        avatar: String
     }
 
     input PostInputData {
@@ -48,6 +57,7 @@ module.exports = buildSchema(`
         createPost(postInput: PostInputData!) : Post!
         deletePost(postId: ID!) : Boolean
         updatePost(postId: ID!, postInput: PostInputData!) : Post!
+        updateUser(userId: ID!, userInput: UserAccountData!) : User!
     }
 
     type RootQuery {

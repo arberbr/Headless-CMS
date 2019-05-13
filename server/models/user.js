@@ -20,7 +20,7 @@ const userSchema = new Schema({
 	},
 	avatar: {
 		type: String,
-		default: 'images/avatar.png'
+		default: 'http://localhost:8080/images/avatar.png'
 	},
 	posts: [
 		{
