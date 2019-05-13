@@ -190,6 +190,43 @@ module.exports = {
 		return true;
 	},
 
+	updatePost: async function(args, req) {
+		if (!req.isAuth) {
+			const error = new Error('Not Authenticated!');
+			error.code = 401;
+			throw error;
+		}
+
+		// get post to be deleted
+		const post = await Post.findById(args.postId);
+		if (!post) {
+			const error = new Error('No Posts found!');
+			error.statusCode = 404;
+			throw error;
+		}
+
+		// check the user has authorization to update this post
+		if (post.user.toString() !== req.userId.toString()) {
+			const error = new Error('Not Authorized');
+			error.statusCode = 403;
+			throw error;
+		}
+
+		post.title = args.postInput.title;
+		post.excerpt = args.postInput.excerpt;
+		post.content = args.postInput.content;
+		post.image = args.postInput.image;
+
+		const updatedPost = await post.save();
+
+		return {
+			...updatedPost._doc,
+			_id: updatedPost._id.toString(),
+			createdAt: updatedPost.createdAt.toISOString(),
+			updatedAt: updatedPost.updatedAt.toISOString()
+		};
+	},
+
 	user: async function(args, req) {
 		if (!req.isAuth) {
 			const error = new Error('Not Authenticated!');

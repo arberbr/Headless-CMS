@@ -1,3 +1,5 @@
+const path = require('path');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -13,6 +15,8 @@ const app = express();
 
 // Handle application/json Forms
 app.use(bodyParser.json()); // application/json
+
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
 // CORS MiddleWare
 app.use((req, res, next) => {

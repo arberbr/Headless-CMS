@@ -17,6 +17,8 @@ module.exports = buildSchema(`
         email: String!
         password: String
         posts: [Post]!
+        bio: String
+        avatar: String
     }
 
     type AuthData {
@@ -45,6 +47,7 @@ module.exports = buildSchema(`
         signup(userInput: UserInputData!) : User!
         createPost(postInput: PostInputData!) : Post!
         deletePost(postId: ID!) : Boolean
+        updatePost(postId: ID!, postInput: PostInputData!) : Post!
     }
 
     type RootQuery {

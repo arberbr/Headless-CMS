@@ -14,6 +14,14 @@ const userSchema = new Schema({
 		type: String,
 		required: true
 	},
+	bio: {
+		type: String,
+		default: 'Hello everyone!'
+	},
+	avatar: {
+		type: String,
+		default: 'images/avatar.png'
+	},
 	posts: [
 		{
 			type: Schema.Types.ObjectId,
