@@ -267,17 +267,11 @@ module.exports = {
 			throw error;
 		}
 
-		const users = await User.find();
-
-		users.map(currentUser => {
-			if (currentUser.email === args.userInput.email) {
-				const error = new Error(
-					'This E-Mail is already assigned to a user!'
-				);
-				error.statusCode = 500;
-				throw error;
-			}
-		});
+		const existingUser = await User.findOne({ email: args.inputUser.email });
+		if (existingUser) {
+			const error = new Error('User already exists!');
+			throw error;
+		}
 
 		user.fullname = args.userInput.fullname;
 		user.email = args.userInput.email;

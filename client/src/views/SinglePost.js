@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Swal from 'sweetalert2';
 
 class SinglePost extends Component {
 	state = {
@@ -47,7 +48,7 @@ class SinglePost extends Component {
 			})
 			.then(resData => {
 				if (resData.errors) {
-					throw new Error('Fetching post failed!');
+					throw new Error('Fetching Post Failed!');
 				}
 				this.setState({
 					title: resData.data.post.title,
@@ -61,7 +62,12 @@ class SinglePost extends Component {
 				});
 			})
 			.catch(error => {
-				console.log(error);
+				Swal.fire({
+					title: 'Error!',
+					text: error.message,
+					type: 'error',
+					confirmButtonText: 'Ok'
+				});
 			});
 	}
 
@@ -75,7 +81,9 @@ class SinglePost extends Component {
 						className="single-post-image"
 					/>
 					<h1>{this.state.title}</h1>
-					<p>{this.state.content}</p>
+					<p
+						dangerouslySetInnerHTML={{ __html: this.state.content }}
+					/>
 					<br />
 					<span>
 						Published: {this.state.createdAt} by {this.state.user}

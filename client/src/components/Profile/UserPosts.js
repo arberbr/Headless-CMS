@@ -9,15 +9,14 @@ const UserPosts = props => {
 					<Link to={post._id}>{post.title}</Link>
 				</div>
 				<div>
+					<Link to={'/edit-post/' + post._id} className="btn-link">
+						<span role="img" aria-labelledby="Edit Post">
+							&#128221;
+						</span>
+					</Link>
 					<span
 						role="img"
-						onClick={() => props.postEditHandler(post._id)}
-						aria-labelledby="Edit Post"
-					>
-						&#128221;
-					</span>
-					<span
-						role="img"
+						className="btn-link"
 						onClick={() => props.postDeleteHandler(post._id)}
 						aria-labelledby="Delete Post"
 					>
@@ -31,7 +30,7 @@ const UserPosts = props => {
 	return (
 		<div className="card">
 			<h1>Your Posts</h1>
-			<ul>{userPost.length ? userPost : 'Write your post Post!'}</ul>
+			<ul>{userPost.length ? userPost : 'Write your first post!'}</ul>
 		</div>
 	);
 };

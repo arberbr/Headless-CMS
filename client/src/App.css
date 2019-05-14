@@ -23,8 +23,14 @@ h1 {
 	padding-bottom: 20px;
 }
 
-b {
+b,
+strong {
 	font-weight: 600;
+}
+
+i,
+em {
+	font-style: italic;
 }
 
 form {
@@ -37,8 +43,8 @@ form {
 form div {
 	position: relative;
 	display: block;
-	width: 100%;
-	height: auto;
+	/* width: 100%; */
+	/* height: auto; */
 	margin-bottom: 20px;
 }
 
@@ -63,10 +69,10 @@ form input {
 form textarea {
 	min-width: 100%;
 	max-width: 100%;
-	min-height: 150px;
-	max-height: 300px;
+	min-height: 100px;
+	max-height: 200px;
 	width: 100%;
-	height: 150px;
+	height: 100px;
 	border: 1px solid #ddd;
 	font-size: 16px;
 	color: #444;
@@ -185,6 +191,10 @@ form button:disabled {
 
 .horizontal-list a {
 	text-decoration: none;
+}
+
+.horizontal-list .btn-link {
+	cursor: pointer;
 }
 
 .user-details {

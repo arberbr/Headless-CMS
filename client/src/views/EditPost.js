@@ -1,97 +1,95 @@
 import React, { Component } from 'react';
 import Swal from 'sweetalert2';
-
-import { EditorState, convertToRaw } from 'draft-js';
+import { EditorState, convertToRaw, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
-
+import htmlToDraft from 'html-to-draftjs';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 
-class AddPost extends Component {
+class EditPost extends Component {
 	state = {
 		title: '',
-		content: '',
 		excerpt: '',
+		content: '',
 		image: '',
-		editorState: EditorState.createEmpty()
+		editorState: ''
 	};
 
 	componentDidMount() {
-		if (!this.props.userId) return;
+		const postId = this.props.match.params.postId;
+		this.loadPost(postId);
 	}
 
 	onEditorStateChange = editorState => {
 		this.setState({
+			editorState: editorState,
 			content: draftToHtml(convertToRaw(editorState.getCurrentContent()))
 		});
 	};
 
-	onPostSubmit = (event, postData) => {
-		event.preventDefault();
-
-		const graphqlQuery = {
+	loadPost = postId => {
+		let graphqlQuery = {
 			query: `
-				mutation CreatePost($title: String!, $excerpt: String, $content: String!, $image: String) {
-					createPost(postInput: {
-      					title: $title,
-     	 				excerpt: $excerpt,
-                        content: $content,
-                        image: $image
-    				}) {
+				query FetchPost($postId: ID!) {
+					post(postId: $postId) {
 						_id
-						title
-  					}
+                        title
+                        excerpt
+						content
+						image
+					}
 				}
 			`,
 			variables: {
-				title: postData.title,
-				excerpt: postData.excerpt,
-				content: postData.content,
-				image: postData.image
+				postId: postId
 			}
 		};
 
-		if (this.state.image) {
-			fetch('http://localhost:8080/graphql', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: this.props.token
-				},
-				body: JSON.stringify(graphqlQuery)
+		fetch('http://localhost:8080/graphql', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: this.props.token
+			},
+			body: JSON.stringify(graphqlQuery)
+		})
+			.then(res => {
+				return res.json();
 			})
-				.then(res => {
-					return res.json();
-				})
-				.then(resData => {
-					if (resData.errors) {
-						throw new Error('Post creation failed!');
-					}
-					Swal.fire({
-						title: 'Success!',
-						text: 'Post created!',
-						type: 'success',
-						confirmButtonText: 'Ok'
-					}).then(() => {
-						this.props.history.replace('/');
-					});
-				})
-				.catch(err => {
-					Swal.fire({
-						title: 'Error!',
-						text: err.message,
-						type: 'error',
-						confirmButtonText: 'Ok'
-					});
+			.then(resData => {
+				if (resData.errors) {
+					throw new Error('Fetching Post failed!');
+				}
+
+				this.setState({
+					title: resData.data.post.title,
+					excerpt: resData.data.post.excerpt,
+					content: resData.data.post.content,
+					image: resData.data.post.image
+					// editorState: resData.data.post.content
 				});
-		} else {
-			Swal.fire({
-				title: 'Warning!',
-				text: 'Image is still being uploaded!',
-				type: 'info',
-				confirmButtonText: 'Ok'
+
+				const contentBlock = htmlToDraft(resData.data.post.content);
+				if (contentBlock) {
+					const contentState = ContentState.createFromBlockArray(
+						contentBlock.contentBlocks
+					);
+					const editorState = EditorState.createWithContent(
+						contentState
+					);
+					this.setState({
+						editorState: editorState
+					});
+				}
+			})
+			.catch(error => {
+				Swal.fire({
+					title: 'Error!',
+					text: error.message,
+					type: 'error',
+					confirmButtonText: 'Ok'
+				});
 			});
-		}
 	};
 
 	handleInputChanger = (event, element) => {
@@ -118,18 +116,86 @@ class AddPost extends Component {
 		});
 	};
 
+	updatePostHandler = (event, postData) => {
+		event.preventDefault();
+
+		const graphqlQuery = {
+			query: `
+				mutation UpdatePost($postId: ID!, $title: String!, $excerpt: String, $content: String!, $image: String) {
+					updatePost(postId: $postId, postInput: {
+      					title: $title,
+     	 				excerpt: $excerpt,
+                        content: $content,
+                        image: $image
+    				}) {
+						_id
+						title
+  					}
+				}
+			`,
+			variables: {
+				postId: this.props.match.params.postId,
+				title: postData.title,
+				excerpt: postData.excerpt,
+				content: postData.content,
+				image: postData.image
+			}
+		};
+
+		if (this.state.image) {
+			fetch('http://localhost:8080/graphql', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: this.props.token
+				},
+				body: JSON.stringify(graphqlQuery)
+			})
+				.then(res => {
+					return res.json();
+				})
+				.then(resData => {
+					if (resData.errors) {
+						throw new Error('Post update failed!');
+					}
+					Swal.fire({
+						title: 'Success!',
+						text: 'Post updated!',
+						type: 'success',
+						confirmButtonText: 'Ok'
+					}).then(() => {
+						this.props.history.replace('/account');
+					});
+				})
+				.catch(err => {
+					Swal.fire({
+						title: 'Error!',
+						text: err.message,
+						type: 'error',
+						confirmButtonText: 'Ok'
+					});
+				});
+		} else {
+			Swal.fire({
+				title: 'Warning!',
+				text: 'Image is still being uploaded!',
+				type: 'info',
+				confirmButtonText: 'Ok'
+			});
+		}
+	};
+
 	render() {
 		let btnState = this.state.image ? '' : 'disabled';
-
 		return (
-			<div className="page-add-post">
+			<div className="page-edit-post">
 				<div className="card">
-					<h1>Add Post</h1>
+					<h1>Edit Post</h1>
 					<form
 						method="POST"
 						action=""
 						onSubmit={event =>
-							this.onPostSubmit(event, {
+							this.updatePostHandler(event, {
 								title: this.state.title,
 								content: this.state.content,
 								excerpt: this.state.excerpt,
@@ -146,6 +212,7 @@ class AddPost extends Component {
 								name="title"
 								id="title"
 								required
+								value={this.state.title}
 								onChange={event =>
 									this.handleInputChanger(event, 'title')
 								}
@@ -156,6 +223,7 @@ class AddPost extends Component {
 							<textarea
 								name="excerpt"
 								id="excerpt"
+								value={this.state.excerpt}
 								onChange={event =>
 									this.handleInputChanger(event, 'excerpt')
 								}
@@ -166,6 +234,7 @@ class AddPost extends Component {
 								Content <span className="required">*</span>
 							</label>
 							<Editor
+								editorState={this.state.editorState}
 								onEditorStateChange={this.onEditorStateChange}
 							/>
 						</div>
@@ -179,7 +248,7 @@ class AddPost extends Component {
 							/>
 						</div>
 						<button type="submit" disabled={btnState}>
-							Add Post
+							Update Post
 						</button>
 					</form>
 				</div>
@@ -188,4 +257,4 @@ class AddPost extends Component {
 	}
 }
 
-export default AddPost;
+export default EditPost;

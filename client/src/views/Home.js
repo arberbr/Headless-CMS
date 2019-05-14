@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Swal from 'sweetalert2';
 
 import PostItems from '../components/PostItems';
 
@@ -48,7 +49,12 @@ class Home extends Component {
 				});
 			})
 			.catch(error => {
-				console.log(error);
+				Swal.fire({
+					title: 'Error!',
+					text: error.message,
+					type: 'error',
+					confirmButtonText: 'Ok'
+				});
 			});
 
 		this.fetchPosts();
@@ -96,7 +102,12 @@ class Home extends Component {
 				});
 			})
 			.catch(error => {
-				console.log(error);
+				Swal.fire({
+					title: 'Error!',
+					text: error.message,
+					type: 'error',
+					confirmButtonText: 'Ok'
+				});
 			});
 	};
 

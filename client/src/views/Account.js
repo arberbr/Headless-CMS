@@ -18,51 +18,6 @@ class Account extends Component {
 		this.loadUserPosts();
 	}
 
-	onPostEditHandler = postId => {
-		let graphqlQuery = {
-			query: `
-				query FetchPost($postId: ID!) {
-					post(postId: $postId) {
-						_id
-						title
-						content
-						excerpt
-						image
-					}
-				}
-			`,
-			variables: {
-				postId: postId
-			}
-		};
-
-		fetch('http://localhost:8080/graphql', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: this.props.token
-			},
-			body: JSON.stringify(graphqlQuery)
-		})
-			.then(res => {
-				return res.json();
-			})
-			.then(resData => {
-				if (resData.errors) {
-					throw new Error('Fetching Post failed!');
-				}
-				this.loadUserPosts();
-			})
-			.catch(error => {
-				Swal.fire({
-					title: 'Error!',
-					text: error.message,
-					type: 'error',
-					confirmButtonText: 'Ok'
-				});
-			});
-	};
-
 	onPostDeleteHandler = postId => {
 		let graphqlQuery = {
 			query: `

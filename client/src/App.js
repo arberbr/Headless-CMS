@@ -12,6 +12,7 @@ import AddPost from './views/AddPost';
 import Account from './views/Account';
 import SinglePost from './views/SinglePost';
 import EditProfile from './views/EditProfile';
+import EditPost from './views/EditPost';
 
 import './App.css';
 
@@ -217,6 +218,17 @@ class App extends Component {
 						exact
 						render={props => (
 							<AddPost
+								{...props}
+								userId={this.state.userId}
+								token={this.state.token}
+							/>
+						)}
+					/>
+					<Route
+						path="/edit-post/:postId"
+						exact
+						render={props => (
+							<EditPost
 								{...props}
 								userId={this.state.userId}
 								token={this.state.token}
