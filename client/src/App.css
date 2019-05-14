@@ -43,8 +43,6 @@ form {
 form div {
 	position: relative;
 	display: block;
-	/* width: 100%; */
-	/* height: auto; */
 	margin-bottom: 20px;
 }
 
@@ -166,10 +164,18 @@ form button:disabled {
 .card-post-item {
 	margin: auto;
 	margin-bottom: 15px;
-	padding: 15px;
 	border-radius: 5px;
 	box-shadow: 1px 1px 3px 2px rgba(0, 0, 0, 0.1);
 	background-color: #fff;
+}
+
+.post-teaser-title,
+.post-teaser-meta {
+	padding: 0 15px;
+}
+
+.post-teaser-meta {
+	padding-bottom: 15px;
 }
 
 .card-post-item h2 {
@@ -213,4 +219,26 @@ form button:disabled {
 
 .user-details .user-info {
 	padding: 0 15px;
+}
+
+.post-content img {
+	max-width: 100%;
+}
+
+.post-content h1 {
+	font-size: 28px;
+}
+
+.post-content h2 {
+	font-size: 24px;
+}
+
+.post-content h3 {
+	font-size: 20px;
+}
+
+.post-teaser-image {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
 }

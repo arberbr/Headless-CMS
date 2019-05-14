@@ -81,7 +81,8 @@ class SinglePost extends Component {
 						className="single-post-image"
 					/>
 					<h1>{this.state.title}</h1>
-					<p
+					<div
+						className="post-content"
 						dangerouslySetInnerHTML={{ __html: this.state.content }}
 					/>
 					<br />

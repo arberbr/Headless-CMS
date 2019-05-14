@@ -66,6 +66,9 @@ class EditProfile extends Component {
 	submitHandler = (event, userData) => {
 		event.preventDefault();
 
+		console.log(userData);
+		console.log(this.state);
+
 		const graphqlQuery = {
 			query: `
 				mutation UpdateUser($userId: ID!, $fullname: String!, $email: String!, $bio: String, $avatar: String) {
@@ -102,7 +105,7 @@ class EditProfile extends Component {
 			})
 			.then(resData => {
 				if (resData.errors) {
-					throw new Error('Updating user data failed!');
+					throw new Error('Failed to update user!');
 				}
 				Swal.fire({
 					title: 'Success!',
@@ -133,7 +136,7 @@ class EditProfile extends Component {
 		const files = event.target.files;
 		const data = new FormData();
 		data.append('file', files[0]);
-		data.append('upload_preset', 'sickfits');
+		data.append('upload_preset', 'vzolarpr');
 		const res = await fetch(
 			'https://api.cloudinary.com/v1_1/ab-sickfits/image/upload',
 			{

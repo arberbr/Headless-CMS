@@ -267,10 +267,14 @@ module.exports = {
 			throw error;
 		}
 
-		const existingUser = await User.findOne({ email: args.inputUser.email });
+		const existingUser = await User.findOne({
+			email: args.userInput.email
+		});
 		if (existingUser) {
-			const error = new Error('User already exists!');
-			throw error;
+			if (existingUser._id.toString() !== req.userId.toString()) {
+				const error = new Error('User already exists!');
+				throw error;
+			}
 		}
 
 		user.fullname = args.userInput.fullname;
