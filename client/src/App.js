@@ -1,22 +1,23 @@
-import React, { Component } from 'react';
-import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import React, { Component } from "react";
+import { Route, Switch, Redirect, withRouter } from "react-router-dom";
+import Swal from "sweetalert2";
 
-import validateEmail from './utils/validateEmail';
+import validateEmail from "./utils/validateEmail";
 
-import Header from './components/Header';
+import Header from "./components/Header";
 
-import Login from './views/Login';
-import Signup from './views/SignUp';
+import Login from "./views/Login";
+import Signup from "./views/SignUp";
 
-import Home from './views/Home';
-import AddPost from './views/AddPost';
-import Account from './views/Account';
-import SinglePost from './views/SinglePost';
-import EditProfile from './views/EditProfile';
-import EditPost from './views/EditPost';
+import Home from "./views/Home";
+import AddPost from "./views/AddPost";
+import Account from "./views/Account";
+import SinglePost from "./views/SinglePost";
+import EditProfile from "./views/EditProfile";
+import EditPost from "./views/EditPost";
 
-import './App.css';
+import "./App.css";
+import "./Typography.css";
 
 class App extends Component {
 	state = {
@@ -26,8 +27,8 @@ class App extends Component {
 	};
 
 	componentDidMount() {
-		const token = localStorage.getItem('token');
-		const expiryDate = localStorage.getItem('expiryDate');
+		const token = localStorage.getItem("token");
+		const expiryDate = localStorage.getItem("expiryDate");
 
 		if (!token || !expiryDate) return;
 
@@ -36,7 +37,7 @@ class App extends Component {
 			return;
 		}
 
-		const userId = localStorage.getItem('userId');
+		const userId = localStorage.getItem("userId");
 		const remainingMilliseconds =
 			new Date(expiryDate).getTime() - new Date().getTime();
 
@@ -46,9 +47,9 @@ class App extends Component {
 
 	logoutHandler = () => {
 		this.setState({ isAuth: false, token: null });
-		localStorage.removeItem('token');
-		localStorage.removeItem('expiryDate');
-		localStorage.removeItem('userId');
+		localStorage.removeItem("token");
+		localStorage.removeItem("expiryDate");
+		localStorage.removeItem("userId");
 	};
 
 	loginHandler = (event, authData) => {
@@ -56,10 +57,10 @@ class App extends Component {
 
 		if (!validateEmail(authData.email)) {
 			Swal.fire({
-				title: 'Error!',
-				text: 'Enter a valid E-Mail address!',
-				type: 'error',
-				confirmButtonText: 'Ok'
+				title: "Error!",
+				text: "Enter a valid E-Mail address!",
+				type: "error",
+				confirmButtonText: "Ok"
 			});
 			return;
 		}
@@ -83,9 +84,9 @@ class App extends Component {
 		};
 
 		fetch(process.env.REACT_APP_BACKEND_URI, {
-			method: 'POST',
+			method: "POST",
 			headers: {
-				'Content-Type': 'application/json'
+				"Content-Type": "application/json"
 			},
 			body: JSON.stringify(graphqlLoginQuery)
 		})
@@ -94,7 +95,7 @@ class App extends Component {
 			})
 			.then(resData => {
 				if (resData.errors) {
-					throw new Error('User login failed!');
+					throw new Error("User login failed!");
 				}
 
 				this.setState({
@@ -103,15 +104,15 @@ class App extends Component {
 					userId: resData.data.login.userId
 				});
 
-				localStorage.setItem('token', resData.data.login.token);
-				localStorage.setItem('userId', resData.data.login.userId);
+				localStorage.setItem("token", resData.data.login.token);
+				localStorage.setItem("userId", resData.data.login.userId);
 
 				const remainingMilliseconds = 60 * 60 * 1000;
 				const expiryDate = new Date(
 					new Date().getTime() + remainingMilliseconds
 				);
 
-				localStorage.setItem('expiryDate', expiryDate.toISOString());
+				localStorage.setItem("expiryDate", expiryDate.toISOString());
 				this.setAutoLogout(remainingMilliseconds);
 			})
 			.catch(error => {
@@ -119,10 +120,10 @@ class App extends Component {
 					isAuth: false
 				});
 				Swal.fire({
-					title: 'Error!',
+					title: "Error!",
 					text: error.message,
-					type: 'error',
-					confirmButtonText: 'Ok'
+					type: "error",
+					confirmButtonText: "Ok"
 				});
 			});
 	};
@@ -132,10 +133,10 @@ class App extends Component {
 
 		if (!validateEmail(authData.email)) {
 			Swal.fire({
-				title: 'Error!',
-				text: 'Enter a valid E-Mail address!',
-				type: 'error',
-				confirmButtonText: 'Ok'
+				title: "Error!",
+				text: "Enter a valid E-Mail address!",
+				type: "error",
+				confirmButtonText: "Ok"
 			});
 			return;
 		}
@@ -162,9 +163,9 @@ class App extends Component {
 		};
 
 		fetch(process.env.REACT_APP_BACKEND_URI, {
-			method: 'POST',
+			method: "POST",
 			headers: {
-				'Content-Type': 'application/json'
+				"Content-Type": "application/json"
 			},
 			body: JSON.stringify(graphqlQuery)
 		})
@@ -173,11 +174,11 @@ class App extends Component {
 			})
 			.then(resData => {
 				if (resData.errors) {
-					throw new Error('User creation failed!');
+					throw new Error("User creation failed!");
 				}
 
 				this.setState({ isAuth: false });
-				this.props.history.replace('/login');
+				this.props.history.replace("/login");
 			})
 			.catch(error => {
 				this.setState({
@@ -185,10 +186,10 @@ class App extends Component {
 				});
 
 				Swal.fire({
-					title: 'Error!',
+					title: "Error!",
 					text: error.message,
-					type: 'error',
-					confirmButtonText: 'Ok'
+					type: "error",
+					confirmButtonText: "Ok"
 				});
 			});
 	};

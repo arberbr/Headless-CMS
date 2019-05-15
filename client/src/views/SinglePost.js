@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import Swal from 'sweetalert2';
+import React, { Component } from "react";
+import Swal from "sweetalert2";
 
 class SinglePost extends Component {
 	state = {
-		title: '',
-		excerpt: '',
-		content: '',
-		image: '',
-		user: '',
-		createdAt: ''
+		title: "",
+		excerpt: "",
+		content: "",
+		image: "",
+		user: "",
+		createdAt: ""
 	};
 
 	componentDidMount() {
@@ -36,9 +36,9 @@ class SinglePost extends Component {
 		};
 
 		fetch(process.env.REACT_APP_BACKEND_URI, {
-			method: 'POST',
+			method: "POST",
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				Authorization: this.props.token
 			},
 			body: JSON.stringify(graphqlQuery)
@@ -48,7 +48,7 @@ class SinglePost extends Component {
 			})
 			.then(resData => {
 				if (resData.errors) {
-					throw new Error('Fetching Post Failed!');
+					throw new Error("Fetching Post Failed!");
 				}
 				this.setState({
 					title: resData.data.post.title,
@@ -57,16 +57,16 @@ class SinglePost extends Component {
 					image: resData.data.post.image,
 					createdAt: new Date(
 						resData.data.post.createdAt
-					).toLocaleDateString('en-US'),
+					).toLocaleDateString("en-US"),
 					user: resData.data.post.user.fullname
 				});
 			})
 			.catch(error => {
 				Swal.fire({
-					title: 'Error!',
+					title: "Error!",
 					text: error.message,
-					type: 'error',
-					confirmButtonText: 'Ok'
+					type: "error",
+					confirmButtonText: "Ok"
 				});
 			});
 	}
@@ -74,21 +74,25 @@ class SinglePost extends Component {
 	render() {
 		return (
 			<div className="page-single-post">
-				<div className="card">
+				<div className="card-post">
 					<img
 						src={this.state.image}
 						alt={this.state.title}
 						className="single-post-image"
 					/>
-					<h1>{this.state.title}</h1>
-					<div
-						className="post-content"
-						dangerouslySetInnerHTML={{ __html: this.state.content }}
-					/>
-					<br />
-					<span className="post-meta">
-						Published: {this.state.createdAt} by {this.state.user}
-					</span>
+					<div className="post-content">
+						<h1>{this.state.title}</h1>
+						<div
+							dangerouslySetInnerHTML={{
+								__html: this.state.content
+							}}
+						/>
+						<br />
+						<span className="post-meta">
+							Published: {this.state.createdAt} by{" "}
+							{this.state.user}
+						</span>
+					</div>
 				</div>
 			</div>
 		);
