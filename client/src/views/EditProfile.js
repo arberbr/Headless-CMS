@@ -66,9 +66,6 @@ class EditProfile extends Component {
 	submitHandler = (event, userData) => {
 		event.preventDefault();
 
-		console.log(userData);
-		console.log(this.state);
-
 		const graphqlQuery = {
 			query: `
 				mutation UpdateUser($userId: ID!, $fullname: String!, $email: String!, $bio: String, $avatar: String) {

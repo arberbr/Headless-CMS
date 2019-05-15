@@ -12,7 +12,11 @@ class Home extends Component {
 
 	componentDidMount() {
 		if (!this.props.userId) return;
+		this.fetchUserData();
+		this.fetchPosts();
+	}
 
+	fetchUserData = () => {
 		let graphqlQuery = {
 			query: `
 				query FetchUser($id: ID!) {
@@ -56,9 +60,7 @@ class Home extends Component {
 					confirmButtonText: 'Ok'
 				});
 			});
-
-		this.fetchPosts();
-	}
+	};
 
 	fetchPosts = () => {
 		const graphqlQuery = {
