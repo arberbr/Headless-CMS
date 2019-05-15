@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
+import validateEmail from './utils/validateEmail';
+
 import Header from './components/Header';
 
 import Login from './views/Login';
@@ -51,6 +53,16 @@ class App extends Component {
 
 	loginHandler = (event, authData) => {
 		event.preventDefault();
+
+		if (!validateEmail(authData.email)) {
+			Swal.fire({
+				title: 'Error!',
+				text: 'Enter a valid E-Mail address!',
+				type: 'error',
+				confirmButtonText: 'Ok'
+			});
+			return;
+		}
 
 		const graphqlLoginQuery = {
 			query: `
@@ -117,6 +129,16 @@ class App extends Component {
 
 	signupHandler = (event, authData) => {
 		event.preventDefault();
+
+		if (!validateEmail(authData.email)) {
+			Swal.fire({
+				title: 'Error!',
+				text: 'Enter a valid E-Mail address!',
+				type: 'error',
+				confirmButtonText: 'Ok'
+			});
+			return;
+		}
 
 		const graphqlQuery = {
 			query: `

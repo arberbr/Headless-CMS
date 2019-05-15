@@ -86,7 +86,7 @@ class SinglePost extends Component {
 						dangerouslySetInnerHTML={{ __html: this.state.content }}
 					/>
 					<br />
-					<span>
+					<span className="post-meta">
 						Published: {this.state.createdAt} by {this.state.user}
 					</span>
 				</div>

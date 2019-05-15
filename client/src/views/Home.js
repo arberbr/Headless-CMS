@@ -75,6 +75,7 @@ class Home extends Component {
 							image
 							user {
 								fullname
+								avatar
 							}
     					}
   					}

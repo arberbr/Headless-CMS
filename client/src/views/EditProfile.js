@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Swal from 'sweetalert2';
 
+import validateEmail from '../utils/validateEmail';
+
 class EditProfile extends Component {
 	state = {
 		fullname: '',
@@ -65,6 +67,16 @@ class EditProfile extends Component {
 
 	submitHandler = (event, userData) => {
 		event.preventDefault();
+
+		if (!validateEmail(userData.email)) {
+			Swal.fire({
+				title: 'Error!',
+				text: 'Enter a valid E-Mail address!',
+				type: 'error',
+				confirmButtonText: 'Ok'
+			});
+			return;
+		}
 
 		const graphqlQuery = {
 			query: `
