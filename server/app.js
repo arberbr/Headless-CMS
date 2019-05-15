@@ -70,13 +70,10 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-	.connect(
-		'mongodb+srv://arber:update6347@nodejs-course-7sl4p.mongodb.net/cms',
-		{
-			useNewUrlParser: true,
-			useFindAndModify: false
-		}
-	)
+	.connect(process.env.MONGODB, {
+		useNewUrlParser: true,
+		useFindAndModify: false
+	})
 	.then(() => {
 		app.listen(process.env.PORT || 8080);
 	})

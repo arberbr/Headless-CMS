@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 
 const UserPosts = props => {
 	let userAvatar =
-		props.user.avatar || 'http://localhost:8080/images/avatar.png';
+		props.user.avatar ||
+		process.env.REACT_APP_BACKEND_ASSETS + 'images/avatar.png';
 	return (
 		<div className="card">
 			<h1>

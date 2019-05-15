@@ -70,7 +70,7 @@ class App extends Component {
 			}
 		};
 
-		fetch('http://localhost:8080/graphql', {
+		fetch(process.env.REACT_APP_BACKEND_URI, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -102,14 +102,13 @@ class App extends Component {
 				localStorage.setItem('expiryDate', expiryDate.toISOString());
 				this.setAutoLogout(remainingMilliseconds);
 			})
-			.catch(err => {
+			.catch(error => {
 				this.setState({
-					isAuth: false,
-					error: err
+					isAuth: false
 				});
 				Swal.fire({
 					title: 'Error!',
-					text: this.state.error.message,
+					text: error.message,
 					type: 'error',
 					confirmButtonText: 'Ok'
 				});
@@ -140,7 +139,7 @@ class App extends Component {
 			}
 		};
 
-		fetch('http://localhost:8080/graphql', {
+		fetch(process.env.REACT_APP_BACKEND_URI, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
@@ -158,15 +157,14 @@ class App extends Component {
 				this.setState({ isAuth: false });
 				this.props.history.replace('/login');
 			})
-			.catch(err => {
+			.catch(error => {
 				this.setState({
-					isAuth: false,
-					error: err
+					isAuth: false
 				});
 
 				Swal.fire({
 					title: 'Error!',
-					text: this.state.error.message,
+					text: error.message,
 					type: 'error',
 					confirmButtonText: 'Ok'
 				});

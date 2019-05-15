@@ -27,7 +27,7 @@ class Home extends Component {
 			}
 		};
 
-		fetch('http://localhost:8080/graphql', {
+		fetch(process.env.REACT_APP_BACKEND_URI, {
 			method: 'POST',
 			headers: {
 				Authorization: this.props.token,
@@ -81,7 +81,7 @@ class Home extends Component {
 			`
 		};
 
-		fetch('http://localhost:8080/graphql', {
+		fetch(process.env.REACT_APP_BACKEND_URI, {
 			method: 'POST',
 			headers: {
 				Authorization: this.props.token,

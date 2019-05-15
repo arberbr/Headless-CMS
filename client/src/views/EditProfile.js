@@ -31,7 +31,7 @@ class EditProfile extends Component {
 			}
 		};
 
-		fetch('http://localhost:8080/graphql', {
+		fetch(process.env.REACT_APP_BACKEND_URI, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ class EditProfile extends Component {
 			}
 		};
 
-		fetch('http://localhost:8080/graphql', {
+		fetch(process.env.REACT_APP_BACKEND_URI, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -136,14 +136,11 @@ class EditProfile extends Component {
 		const files = event.target.files;
 		const data = new FormData();
 		data.append('file', files[0]);
-		data.append('upload_preset', 'vzolarpr');
-		const res = await fetch(
-			'https://api.cloudinary.com/v1_1/ab-sickfits/image/upload',
-			{
-				method: 'POST',
-				body: data
-			}
-		);
+		data.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PRESET);
+		const res = await fetch(process.env.REACT_APP_CLOUDINARY_UPLOAD, {
+			method: 'POST',
+			body: data
+		});
 		const file = await res.json();
 		this.setState({
 			avatar: file.secure_url
@@ -154,7 +151,7 @@ class EditProfile extends Component {
 		return (
 			<div className="page-account">
 				<div className="card">
-					<h1>Editing {this.state.fullname}</h1>
+					<h1>Editing Profile</h1>
 					<form
 						method="POST"
 						action=""

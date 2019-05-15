@@ -45,7 +45,7 @@ class EditPost extends Component {
 			}
 		};
 
-		fetch('http://localhost:8080/graphql', {
+		fetch(process.env.REACT_APP_BACKEND_URI, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -66,7 +66,6 @@ class EditPost extends Component {
 					excerpt: resData.data.post.excerpt,
 					content: resData.data.post.content,
 					image: resData.data.post.image
-					// editorState: resData.data.post.content
 				});
 
 				const contentBlock = htmlToDraft(resData.data.post.content);
@@ -102,14 +101,11 @@ class EditPost extends Component {
 		const files = event.target.files;
 		const data = new FormData();
 		data.append('file', files[0]);
-		data.append('upload_preset', 'sickfits');
-		const res = await fetch(
-			'https://api.cloudinary.com/v1_1/ab-sickfits/image/upload',
-			{
-				method: 'POST',
-				body: data
-			}
-		);
+		data.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PRESET);
+		const res = await fetch(process.env.REACT_APP_CLOUDINARY_UPLOAD, {
+			method: 'POST',
+			body: data
+		});
 		const file = await res.json();
 		this.setState({
 			image: file.secure_url
@@ -143,7 +139,7 @@ class EditPost extends Component {
 		};
 
 		if (this.state.image) {
-			fetch('http://localhost:8080/graphql', {
+			fetch(process.env.REACT_APP_BACKEND_URI, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -167,10 +163,10 @@ class EditPost extends Component {
 						this.props.history.replace('/account');
 					});
 				})
-				.catch(err => {
+				.catch(error => {
 					Swal.fire({
 						title: 'Error!',
-						text: err.message,
+						text: error.message,
 						type: 'error',
 						confirmButtonText: 'Ok'
 					});
