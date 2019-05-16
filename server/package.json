@@ -3,6 +3,9 @@
 	"version": "1.0.0",
 	"description": "Simple Minimal CMS built using NodeJs, ExpressJS, MongoDB, GraphQL",
 	"main": "index.js",
+	"engines": {
+		"node": "8.15.0"
+	},
 	"scripts": {
 		"start": "nodemon app.js"
 	},
