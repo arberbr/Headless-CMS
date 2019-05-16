@@ -49,7 +49,7 @@ module.exports = buildSchema(`
         title: String!
         content: String!
         excerpt: String
-        image: String
+        image: String!
     }
 
     type RootMutation {

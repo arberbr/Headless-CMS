@@ -329,3 +329,7 @@ form button:disabled {
 .post-content h3 {
 	font-size: 20px;
 }
+
+.label-helper {
+	color: #999;
+}

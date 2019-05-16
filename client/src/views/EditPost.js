@@ -117,7 +117,7 @@ class EditPost extends Component {
 
 		const graphqlQuery = {
 			query: `
-				mutation UpdatePost($postId: ID!, $title: String!, $excerpt: String, $content: String!, $image: String) {
+				mutation UpdatePost($postId: ID!, $title: String!, $excerpt: String, $content: String!, $image: String!) {
 					updatePost(postId: $postId, postInput: {
       					title: $title,
      	 				excerpt: $excerpt,
@@ -268,7 +268,13 @@ class EditPost extends Component {
 							/>
 						</div>
 						<div>
-							<label htmlFor="image">Image</label>
+							<label htmlFor="image">
+								Image{' '}
+								<span className="label-helper">
+									(do not click if you don't want to change
+									the current image)
+								</span>
+							</label>
 							<input
 								type="file"
 								name="image"

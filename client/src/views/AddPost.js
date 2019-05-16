@@ -31,7 +31,7 @@ class AddPost extends Component {
 
 		const graphqlQuery = {
 			query: `
-				mutation CreatePost($title: String!, $excerpt: String, $content: String!, $image: String) {
+				mutation CreatePost($title: String!, $excerpt: String, $content: String!, $image: String!) {
 					createPost(postInput: {
       					title: $title,
      	 				excerpt: $excerpt,
@@ -200,11 +200,14 @@ class AddPost extends Component {
 							/>
 						</div>
 						<div>
-							<label htmlFor="image">Image</label>
+							<label htmlFor="image">
+								Image <span className="required">*</span>
+							</label>
 							<input
 								type="file"
 								name="image"
 								id="image"
+								required
 								onChange={event => this.handleFilePicker(event)}
 							/>
 						</div>
