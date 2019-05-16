@@ -147,7 +147,6 @@ form button:disabled {
 	clear: both;
 	padding: 15px;
 	background-color: #fff;
-	box-shadow: 1px 1px 1px 3px rgba(0, 0, 0, 0, 1);
 }
 
 .app-header nav {
@@ -332,4 +331,24 @@ form button:disabled {
 
 .label-helper {
 	color: #999;
+}
+
+.post-author-box {
+	position: relative;
+	display: flex;
+	justify-content: flex-start;
+	width: 100%;
+	height: auto;
+	padding: 15px;
+}
+
+.post-author-image {
+	padding-right: 15px;
+}
+
+.post-author-avatar {
+	width: 80px;
+	height: 80px;
+	object-fit: cover;
+	border-radius: 50%;
 }

@@ -177,7 +177,14 @@ class App extends Component {
 				}
 
 				this.setState({ isAuth: false });
-				this.props.history.replace('/login');
+				Swal.fire({
+					title: 'Success!',
+					text: 'Account created!',
+					type: 'success',
+					confirmButtonText: 'Ok'
+				}).then(() => {
+					this.props.history.replace('/login');
+				});
 			})
 			.catch(error => {
 				this.setState({

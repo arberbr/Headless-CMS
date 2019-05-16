@@ -1,14 +1,16 @@
-import React, { Component } from "react";
-import Swal from "sweetalert2";
+import React, { Component } from 'react';
+import Swal from 'sweetalert2';
 
 class SinglePost extends Component {
 	state = {
-		title: "",
-		excerpt: "",
-		content: "",
-		image: "",
-		user: "",
-		createdAt: ""
+		title: '',
+		excerpt: '',
+		content: '',
+		image: '',
+		userFullName: '',
+		userBio: '',
+		userAvatar: '',
+		createdAt: ''
 	};
 
 	componentDidMount() {
@@ -24,7 +26,9 @@ class SinglePost extends Component {
                         content
                         image
                         user {
-                            fullname
+							fullname
+							bio
+							avatar
                         }
                         createdAt
                     }
@@ -36,9 +40,9 @@ class SinglePost extends Component {
 		};
 
 		fetch(process.env.REACT_APP_BACKEND_URI, {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				Authorization: this.props.token
 			},
 			body: JSON.stringify(graphqlQuery)
@@ -48,7 +52,7 @@ class SinglePost extends Component {
 			})
 			.then(resData => {
 				if (resData.errors) {
-					throw new Error("Fetching Post Failed!");
+					throw new Error('Fetching Post Failed!');
 				}
 				this.setState({
 					title: resData.data.post.title,
@@ -57,16 +61,18 @@ class SinglePost extends Component {
 					image: resData.data.post.image,
 					createdAt: new Date(
 						resData.data.post.createdAt
-					).toLocaleDateString("en-US"),
-					user: resData.data.post.user.fullname
+					).toLocaleDateString('en-US'),
+					userFullName: resData.data.post.user.fullname,
+					userBio: resData.data.post.user.bio,
+					userAvatar: resData.data.post.user.avatar
 				});
 			})
 			.catch(error => {
 				Swal.fire({
-					title: "Error!",
+					title: 'Error!',
 					text: error.message,
-					type: "error",
-					confirmButtonText: "Ok"
+					type: 'error',
+					confirmButtonText: 'Ok'
 				});
 			});
 	}
@@ -89,9 +95,23 @@ class SinglePost extends Component {
 						/>
 						<br />
 						<span className="post-meta">
-							Published: {this.state.createdAt} by{" "}
-							{this.state.user}
+							Published: {this.state.createdAt} by{' '}
+							{this.state.userFullName}
 						</span>
+					</div>
+					<hr />
+					<div className="post-author-box">
+						<div className="post-author-image">
+							<img
+								className="post-author-avatar"
+								src={this.state.userAvatar}
+								alt={this.state.userFullName}
+							/>
+						</div>
+						<div className="post-author-info">
+							<h4>{this.state.userFullName}</h4>
+							{this.state.userBio}
+						</div>
 					</div>
 				</div>
 			</div>

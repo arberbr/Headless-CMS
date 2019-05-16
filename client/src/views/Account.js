@@ -19,42 +19,61 @@ class Account extends Component {
 	}
 
 	onPostDeleteHandler = postId => {
-		let graphqlQuery = {
-			query: `
-				mutation DeletePost($postId: ID!) {
-					deletePost(postId: $postId)
-				}
-			`,
-			variables: {
-				postId: postId
-			}
-		};
+		Swal.fire({
+			title: 'Are you sure?',
+			text: 'You will not be able to recover this post!',
+			type: 'warning',
+			showCancelButton: true,
+			confirmButtonText: 'Yes, delete it!',
+			cancelButtonText: 'No, keep it!'
+		}).then(result => {
+			if (result.value) {
+				let graphqlQuery = {
+					query: `
+						mutation DeletePost($postId: ID!) {
+							deletePost(postId: $postId)
+						}
+					`,
+					variables: {
+						postId: postId
+					}
+				};
 
-		fetch(process.env.REACT_APP_BACKEND_URI, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: this.props.token
-			},
-			body: JSON.stringify(graphqlQuery)
-		})
-			.then(res => {
-				return res.json();
-			})
-			.then(resData => {
-				if (resData.errors) {
-					throw new Error('Deleting Post failed!');
-				}
-				this.loadUserPosts();
-			})
-			.catch(error => {
-				Swal.fire({
-					title: 'Error!',
-					text: error.message,
-					type: 'error',
-					confirmButtonText: 'Ok'
-				});
-			});
+				fetch(process.env.REACT_APP_BACKEND_URI, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: this.props.token
+					},
+					body: JSON.stringify(graphqlQuery)
+				})
+					.then(res => {
+						return res.json();
+					})
+					.then(resData => {
+						if (resData.errors) {
+							throw new Error('Deleting Post failed!');
+						}
+						Swal.fire(
+							'Success!',
+							'Your post has been deleted!',
+							'success'
+						).then(() => {
+							this.loadUserPosts();
+						});
+					})
+					.catch(error => {
+						Swal.fire({
+							title: 'Error!',
+							text: error.message,
+							type: 'error',
+							confirmButtonText: 'Ok'
+						});
+					});
+			} else if (result.dismiss === Swal.DismissReason.cancel) {
+				Swal.fire('Information!', 'Your post is safe :)', 'info');
+			}
+		});
 	};
 
 	loadUserPosts = () => {
