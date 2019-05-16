@@ -30,7 +30,9 @@ const UserPosts = props => {
 	return (
 		<div className="card">
 			<h1>Your Posts</h1>
-			<ul>{userPost.length ? userPost : 'Write your first post!'}</ul>
+			<ul className="flex-list">
+				{userPost.length ? userPost : 'Write your first post!'}
+			</ul>
 		</div>
 	);
 };
