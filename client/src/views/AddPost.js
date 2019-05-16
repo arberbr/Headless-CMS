@@ -164,6 +164,39 @@ class AddPost extends Component {
 							</label>
 							<Editor
 								onEditorStateChange={this.onEditorStateChange}
+								toolbar={{
+									options: [
+										'blockType',
+										'inline',
+										'link',
+										'list'
+									],
+									inline: {
+										options: [
+											'bold',
+											'italic',
+											'underline',
+											'strikethrough',
+											'monospace',
+											'superscript',
+											'subscript'
+										]
+									},
+									blockType: {
+										inDropdown: true,
+										options: [
+											'Normal',
+											'H1',
+											'H2',
+											'H3',
+											'H4',
+											'H5',
+											'H6',
+											'Blockquote',
+											'Code'
+										]
+									}
+								}}
 							/>
 						</div>
 						<div>
