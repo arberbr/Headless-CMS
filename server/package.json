@@ -1,5 +1,5 @@
 {
-	"name": "ab-chat-server",
+	"name": "ab-cms-server",
 	"version": "1.0.0",
 	"description": "Simple Minimal CMS built using NodeJs, ExpressJS, MongoDB, GraphQL",
 	"main": "index.js",
