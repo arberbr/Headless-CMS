@@ -90,9 +90,9 @@ class SearchResults extends Component {
 		return (
 			<div className="page-search-results">
 				<div className="card">
-					<h1>
+					<h2>
 						Search Results for: {this.props.match.params.keyword}
-					</h1>
+					</h2>
 					{renderSearchResults}
 				</div>
 			</div>

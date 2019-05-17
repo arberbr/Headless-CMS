@@ -152,6 +152,11 @@ form button:disabled {
 	cursor: pointer;
 }
 
+.search-box {
+	width: 100%;
+	max-width: 1024px;
+}
+
 .search-form input {
 	padding: 3px;
 }

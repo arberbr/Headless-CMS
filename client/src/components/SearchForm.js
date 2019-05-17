@@ -33,7 +33,7 @@ class SearchForm extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className="search-box">
 				<form
 					className="search-form"
 					method="POST"

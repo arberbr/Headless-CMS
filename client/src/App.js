@@ -16,7 +16,7 @@ import SinglePost from './views/SinglePost';
 import EditProfile from './views/EditProfile';
 import EditPost from './views/EditPost';
 
-import SearchResults from './views/Search';
+import SearchResults from './views/SearchResults';
 
 import './App.css';
 
