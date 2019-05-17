@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Swal from 'sweetalert2';
 
+import timeToRead from '../utils/timeToRead';
+
 class SinglePost extends Component {
 	state = {
 		title: '',
@@ -89,18 +91,17 @@ class SinglePost extends Component {
 					/>
 					<div className="post-content">
 						<h1>{this.state.title}</h1>
+						<div className="post-meta">
+							{`Published: ${this.state.createdAt} by ${
+								this.state.userFullName
+							} - ${timeToRead(this.state.content)}`}
+						</div>
 						<div
 							dangerouslySetInnerHTML={{
 								__html: this.state.content
 							}}
 						/>
-						<br />
-						<span className="post-meta">
-							Published: {this.state.createdAt} by{' '}
-							{this.state.userFullName}
-						</span>
 					</div>
-					<hr />
 					<div className="post-author-box">
 						<div className="post-author-image">
 							<img

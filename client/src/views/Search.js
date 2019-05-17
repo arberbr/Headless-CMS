@@ -28,7 +28,8 @@ class SearchResults extends Component {
 							_id
       						title
       						excerpt
-      						content
+							content
+							slug
     					}
   					}
 				}
@@ -79,7 +80,7 @@ class SearchResults extends Component {
 				return (
 					<div key={result._id}>
 						<h5>
-							<Link to={'/' + result._id}>{result.title}</Link>
+							<Link to={'/' + result.slug}>{result.title}</Link>
 						</h5>
 					</div>
 				);
