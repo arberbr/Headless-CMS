@@ -16,6 +16,8 @@ import SinglePost from './views/SinglePost';
 import EditProfile from './views/EditProfile';
 import EditPost from './views/EditPost';
 
+import SearchResults from './views/Search';
+
 import './App.css';
 
 class App extends Component {
@@ -278,6 +280,17 @@ class App extends Component {
 						exact
 						render={props => (
 							<EditProfile
+								{...props}
+								userId={this.state.userId}
+								token={this.state.token}
+							/>
+						)}
+					/>
+					<Route
+						path="/search/:keyword"
+						exact
+						render={props => (
+							<SearchResults
 								{...props}
 								userId={this.state.userId}
 								token={this.state.token}

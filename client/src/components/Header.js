@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import SearchForm from './SearchForm';
+
 const Header = props => {
 	let leftMenuItems = (
 		<>
@@ -9,6 +11,8 @@ const Header = props => {
 			</li>
 		</>
 	);
+
+	let centerMenu = null;
 
 	let rightMenuItems = (
 		<>
@@ -33,6 +37,8 @@ const Header = props => {
 			</>
 		);
 
+		centerMenu = <SearchForm />;
+
 		rightMenuItems = (
 			<>
 				<li>
@@ -49,6 +55,7 @@ const Header = props => {
 		<header className="app-header">
 			<nav>
 				<ul className="menu-header">{leftMenuItems}</ul>
+				{centerMenu}
 				<ul className="menu-header">{rightMenuItems}</ul>
 			</nav>
 		</header>

@@ -65,6 +65,7 @@ module.exports = buildSchema(`
         posts : PostData!
         post(postId: ID!) : Post!
         user(id: ID!): User!
+        searchPosts(keyword: String!): PostData!
     }
 
     schema {

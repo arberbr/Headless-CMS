@@ -273,6 +273,7 @@ module.exports = {
 		if (existingUser) {
 			if (existingUser._id.toString() !== req.userId.toString()) {
 				const error = new Error('User already exists!');
+				error.statusCode = 500;
 				throw error;
 			}
 		}
@@ -287,6 +288,45 @@ module.exports = {
 		return {
 			...updatedUser._doc,
 			_id: updatedUser._id.toString()
+		};
+	},
+
+	searchPosts: async function(args, req) {
+		if (!req.isAuth) {
+			const error = new Error('Not Authenticated!');
+			error.code = 401;
+			throw error;
+		}
+
+		const posts = await Post.find()
+			.or([
+				{
+					title: { $regex: args.keyword, $options: 'i' }
+				},
+				{
+					excerpt: { $regex: args.keyword, $options: 'i' }
+				},
+				{
+					content: { $regex: args.keyword, $options: 'i' }
+				}
+			])
+			.sort({ title: 1 });
+
+		if (!posts) {
+			const error = new Error('No Posts found for given search result!');
+			error.statusCode = 404;
+			throw error;
+		}
+
+		return {
+			posts: posts.map(post => {
+				return {
+					...post._doc,
+					_id: post._id.toString(),
+					createdAt: post.createdAt.toISOString(),
+					updatedAt: post.updatedAt.toISOString()
+				};
+			})
 		};
 	}
 };

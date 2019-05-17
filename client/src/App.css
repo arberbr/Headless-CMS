@@ -153,6 +153,7 @@ form button:disabled {
 
 .app-header nav {
 	display: flex;
+	align-items: center;
 	justify-content: space-between;
 }
 
@@ -174,6 +175,10 @@ form button:disabled {
 	color: #000;
 	text-decoration: none;
 	cursor: pointer;
+}
+
+.search-form input {
+	padding: 3px;
 }
 
 .flex-list {
