@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+var uniqueValidator = require('mongoose-unique-validator');
 
 const postSchema = new Schema(
 	{
@@ -33,5 +34,7 @@ const postSchema = new Schema(
 		timestamps: true
 	}
 );
+
+postSchema.plugin(uniqueValidator);
 
 module.exports = mongoose.model('Post', postSchema);
