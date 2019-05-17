@@ -6,7 +6,7 @@ const UserPosts = props => {
 		return (
 			<li key={post._id} className="horizontal-list">
 				<div>
-					<Link to={post._id}>{post.title}</Link>
+					<Link to={post.slug}>{post.title}</Link>
 				</div>
 				<div>
 					<Link to={'/edit-post/' + post._id} className="btn-link">

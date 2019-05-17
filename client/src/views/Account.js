@@ -86,6 +86,7 @@ class Account extends Component {
 						posts {
 							_id
 							title
+							slug
 						}
 						bio
 						avatar
