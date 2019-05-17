@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const Post = require('../models/post');
 
+const slugify = require('../utils/slugify');
+
 module.exports = {
 	signup: async function(args, req) {
 		const email = args.userInput.email;
@@ -77,10 +79,20 @@ module.exports = {
 			throw error;
 		}
 
+		const randomNr = Math.floor(Math.random() * 1000 + 1);
+
+		const postSlug = randomNr + '-' + slugify(postInput.title);
+		if (!postSlug) {
+			const error = new Error('Post slug could not be generated!');
+			error.code = 401;
+			throw error;
+		}
+
 		const post = new Post({
 			title: postInput.title,
 			content: postInput.content,
 			excerpt: postInput.excerpt,
+			slug: postSlug,
 			image: postInput.image,
 			user: user
 		});
@@ -129,6 +141,30 @@ module.exports = {
 	},
 
 	post: async function(args, req) {
+		if (!req.isAuth) {
+			const error = new Error('Not Authenticated!');
+			error.code = 401;
+			throw error;
+		}
+
+		const post = await Post.findOne({ slug: args.postSlug }).populate(
+			'user'
+		);
+		if (!post) {
+			const error = new Error('No Posts found!');
+			error.statusCode = 404;
+			throw error;
+		}
+
+		return {
+			...post._doc,
+			_id: post._id.toString(),
+			createdAt: post.createdAt.toISOString(),
+			updatedAt: post.updatedAt.toISOString()
+		};
+	},
+
+	fetchEditPost: async function(args, req) {
 		if (!req.isAuth) {
 			const error = new Error('Not Authenticated!');
 			error.code = 401;
@@ -234,7 +270,10 @@ module.exports = {
 			throw error;
 		}
 
-		const user = await User.findById(req.userId).populate('posts');
+		const user = await User.findById(req.userId).populate({
+			path: 'posts',
+			options: { sort: '-createdAt' }
+		});
 		if (!user) {
 			const error = new Error('No user was found!');
 			error.statusCode = 404;

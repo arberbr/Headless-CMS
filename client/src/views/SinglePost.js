@@ -14,17 +14,18 @@ class SinglePost extends Component {
 	};
 
 	componentDidMount() {
-		const postId = this.props.match.params.postId;
-		if (!postId) return;
+		const postSlug = this.props.match.params.postSlug;
+		if (!postSlug) return;
 
 		const graphqlQuery = {
 			query: `
-                query FetchPost($postId: ID!) {
-                    post(postId: $postId) {
+                query FetchPost($postSlug: String!) {
+                    post(postSlug: $postSlug) {
                         _id
                         title
                         content
-                        image
+						image
+						slug
                         user {
 							fullname
 							bio
@@ -35,7 +36,7 @@ class SinglePost extends Component {
                 }
             `,
 			variables: {
-				postId: postId
+				postSlug: postSlug
 			}
 		};
 

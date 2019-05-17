@@ -71,7 +71,8 @@ class Home extends Component {
       						_id
       						title
       						content
-      						excerpt
+							excerpt
+							slug
 							image
 							user {
 								fullname

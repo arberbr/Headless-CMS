@@ -31,7 +31,7 @@ class EditPost extends Component {
 		let graphqlQuery = {
 			query: `
 				query FetchPost($postId: ID!) {
-					post(postId: $postId) {
+					fetchEditPost(postId: $postId) {
 						_id
                         title
                         excerpt
@@ -61,14 +61,18 @@ class EditPost extends Component {
 					throw new Error('Fetching Post failed!');
 				}
 
+				console.log(resData);
+
 				this.setState({
-					title: resData.data.post.title,
-					excerpt: resData.data.post.excerpt,
-					content: resData.data.post.content,
-					image: resData.data.post.image
+					title: resData.data.fetchEditPost.title,
+					excerpt: resData.data.fetchEditPost.excerpt,
+					content: resData.data.fetchEditPost.content,
+					image: resData.data.fetchEditPost.image
 				});
 
-				const contentBlock = htmlToDraft(resData.data.post.content);
+				const contentBlock = htmlToDraft(
+					resData.data.fetchEditPost.content
+				);
 				if (contentBlock) {
 					const contentState = ContentState.createFromBlockArray(
 						contentBlock.contentBlocks

@@ -24,7 +24,7 @@ const PostItem = props => {
 				<div className="card-post-info">
 					<div className="card-post-teaser-title">
 						<h2>
-							<Link to={props.post._id}>{props.post.title}</Link>
+							<Link to={props.post.slug}>{props.post.title}</Link>
 						</h2>
 					</div>
 					<div className="card-post-teaser-meta">

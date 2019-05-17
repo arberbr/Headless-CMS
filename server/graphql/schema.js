@@ -6,6 +6,7 @@ module.exports = buildSchema(`
         title: String!
         content: String!
         excerpt: String
+        slug: String
         image: String
         user: User!
         createdAt: String!
@@ -63,7 +64,8 @@ module.exports = buildSchema(`
     type RootQuery {
         login(email: String!, password: String!) : AuthData!
         posts : PostData!
-        post(postId: ID!) : Post!
+        post(postSlug: String!) : Post!
+        fetchEditPost(postId: ID!) : Post!
         user(id: ID!): User!
         searchPosts(keyword: String!): PostData!
     }

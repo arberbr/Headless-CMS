@@ -15,6 +15,11 @@ const postSchema = new Schema(
 			type: String,
 			required: false
 		},
+		slug: {
+			type: String,
+			required: true,
+			unique: true
+		},
 		image: {
 			type: String,
 			required: false

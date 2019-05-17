@@ -73,7 +73,8 @@ app.use((error, req, res, next) => {
 mongoose
 	.connect(process.env.MONGODB, {
 		useNewUrlParser: true,
-		useFindAndModify: false
+		useFindAndModify: false,
+		useCreateIndex: true
 	})
 	.then(() => {
 		app.listen(process.env.PORT || 8080);
