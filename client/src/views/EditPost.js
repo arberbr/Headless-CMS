@@ -63,8 +63,6 @@ class EditPost extends Component {
 					throw new Error("Fetching Post failed!");
 				}
 
-				console.log(resData);
-
 				this.setState({
 					title: resData.data.fetchEditPost.title,
 					excerpt: resData.data.fetchEditPost.excerpt,
