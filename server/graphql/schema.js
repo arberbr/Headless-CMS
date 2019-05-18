@@ -1,4 +1,4 @@
-const { buildSchema } = require('graphql');
+const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
     type Post {
@@ -59,6 +59,7 @@ module.exports = buildSchema(`
         deletePost(postId: ID!) : Boolean
         updatePost(postId: ID!, postInput: PostInputData!) : Post!
         updateUser(userId: ID!, userInput: UserAccountData!) : User!
+        changePassword(newPassword: String!) : Boolean
     }
 
     type RootQuery {
