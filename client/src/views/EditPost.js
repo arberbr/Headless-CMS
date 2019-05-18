@@ -1,18 +1,20 @@
-import React, { Component } from 'react';
-import Swal from 'sweetalert2';
-import { EditorState, convertToRaw, ContentState } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import React, { Component } from "react";
+import Swal from "sweetalert2";
+import { EditorState, convertToRaw, ContentState } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
+import htmlToDraft from "html-to-draftjs";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
+import fileUpload from "../utils/fileUpload";
 
 class EditPost extends Component {
 	state = {
-		title: '',
-		excerpt: '',
-		content: '',
-		image: '',
-		editorState: ''
+		title: "",
+		excerpt: "",
+		content: "",
+		image: "",
+		editorState: ""
 	};
 
 	componentDidMount() {
@@ -46,9 +48,9 @@ class EditPost extends Component {
 		};
 
 		fetch(process.env.REACT_APP_BACKEND_URI, {
-			method: 'POST',
+			method: "POST",
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				Authorization: this.props.token
 			},
 			body: JSON.stringify(graphqlQuery)
@@ -58,7 +60,7 @@ class EditPost extends Component {
 			})
 			.then(resData => {
 				if (resData.errors) {
-					throw new Error('Fetching Post failed!');
+					throw new Error("Fetching Post failed!");
 				}
 
 				console.log(resData);
@@ -87,10 +89,10 @@ class EditPost extends Component {
 			})
 			.catch(error => {
 				Swal.fire({
-					title: 'Error!',
+					title: "Error!",
 					text: error.message,
-					type: 'error',
-					confirmButtonText: 'Ok'
+					type: "error",
+					confirmButtonText: "Ok"
 				});
 			});
 	};
@@ -103,16 +105,9 @@ class EditPost extends Component {
 
 	handleFilePicker = async event => {
 		const files = event.target.files;
-		const data = new FormData();
-		data.append('file', files[0]);
-		data.append('upload_preset', process.env.REACT_APP_CLOUDINARY_PRESET);
-		const res = await fetch(process.env.REACT_APP_CLOUDINARY_UPLOAD, {
-			method: 'POST',
-			body: data
-		});
-		const file = await res.json();
+		const fileUploadRes = await fileUpload(files);
 		this.setState({
-			image: file.secure_url
+			image: fileUploadRes.secure_url
 		});
 	};
 
@@ -144,9 +139,9 @@ class EditPost extends Component {
 
 		if (this.state.image) {
 			fetch(process.env.REACT_APP_BACKEND_URI, {
-				method: 'POST',
+				method: "POST",
 				headers: {
-					'Content-Type': 'application/json',
+					"Content-Type": "application/json",
 					Authorization: this.props.token
 				},
 				body: JSON.stringify(graphqlQuery)
@@ -156,37 +151,37 @@ class EditPost extends Component {
 				})
 				.then(resData => {
 					if (resData.errors) {
-						throw new Error('Post update failed!');
+						throw new Error("Post update failed!");
 					}
 					Swal.fire({
-						title: 'Success!',
-						text: 'Post updated!',
-						type: 'success',
-						confirmButtonText: 'Ok'
+						title: "Success!",
+						text: "Post updated!",
+						type: "success",
+						confirmButtonText: "Ok"
 					}).then(() => {
-						this.props.history.replace('/account');
+						this.props.history.replace("/account");
 					});
 				})
 				.catch(error => {
 					Swal.fire({
-						title: 'Error!',
+						title: "Error!",
 						text: error.message,
-						type: 'error',
-						confirmButtonText: 'Ok'
+						type: "error",
+						confirmButtonText: "Ok"
 					});
 				});
 		} else {
 			Swal.fire({
-				title: 'Warning!',
-				text: 'Image is still being uploaded!',
-				type: 'info',
-				confirmButtonText: 'Ok'
+				title: "Warning!",
+				text: "Image is still being uploaded!",
+				type: "info",
+				confirmButtonText: "Ok"
 			});
 		}
 	};
 
 	render() {
-		let btnState = this.state.image ? '' : 'disabled';
+		let btnState = this.state.image ? "" : "disabled";
 		return (
 			<div className="page-edit-post">
 				<div className="card">
@@ -214,7 +209,7 @@ class EditPost extends Component {
 								required
 								value={this.state.title}
 								onChange={event =>
-									this.handleInputChanger(event, 'title')
+									this.handleInputChanger(event, "title")
 								}
 							/>
 						</div>
@@ -225,7 +220,7 @@ class EditPost extends Component {
 								id="excerpt"
 								value={this.state.excerpt}
 								onChange={event =>
-									this.handleInputChanger(event, 'excerpt')
+									this.handleInputChanger(event, "excerpt")
 								}
 							/>
 						</div>
@@ -238,34 +233,34 @@ class EditPost extends Component {
 								onEditorStateChange={this.onEditorStateChange}
 								toolbar={{
 									options: [
-										'blockType',
-										'inline',
-										'link',
-										'list'
+										"blockType",
+										"inline",
+										"link",
+										"list"
 									],
 									inline: {
 										options: [
-											'bold',
-											'italic',
-											'underline',
-											'strikethrough',
-											'monospace',
-											'superscript',
-											'subscript'
+											"bold",
+											"italic",
+											"underline",
+											"strikethrough",
+											"monospace",
+											"superscript",
+											"subscript"
 										]
 									},
 									blockType: {
 										inDropdown: true,
 										options: [
-											'Normal',
-											'H1',
-											'H2',
-											'H3',
-											'H4',
-											'H5',
-											'H6',
-											'Blockquote',
-											'Code'
+											"Normal",
+											"H1",
+											"H2",
+											"H3",
+											"H4",
+											"H5",
+											"H6",
+											"Blockquote",
+											"Code"
 										]
 									}
 								}}
@@ -273,7 +268,7 @@ class EditPost extends Component {
 						</div>
 						<div>
 							<label htmlFor="image">
-								Image{' '}
+								Image{" "}
 								<span className="label-helper">
 									(do not click if you don't want to change
 									the current image)
