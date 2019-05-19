@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 class SignUp extends Component {
 	state = {
-		email: '',
-		fullname: '',
-		password: ''
+		email: "",
+		fullname: "",
+		password: ""
 	};
 
 	handleInputChanger = (event, element) => {
@@ -38,7 +38,7 @@ class SignUp extends Component {
 								id="email"
 								required
 								onChange={event =>
-									this.handleInputChanger(event, 'email')
+									this.handleInputChanger(event, "email")
 								}
 							/>
 						</div>
@@ -52,7 +52,7 @@ class SignUp extends Component {
 								id="fullname"
 								required
 								onChange={event =>
-									this.handleInputChanger(event, 'fullname')
+									this.handleInputChanger(event, "fullname")
 								}
 							/>
 						</div>
@@ -66,7 +66,7 @@ class SignUp extends Component {
 								id="password"
 								required
 								onChange={event =>
-									this.handleInputChanger(event, 'password')
+									this.handleInputChanger(event, "password")
 								}
 							/>
 						</div>
