@@ -1,10 +1,11 @@
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+var gravatar = require('gravatar');
 
-const User = require("../models/user");
-const Post = require("../models/post");
+const User = require('../models/user');
+const Post = require('../models/post');
 
-const slugify = require("../utils/slugify");
+const slugify = require('../utils/slugify');
 
 module.exports = {
 	signup: async function(args, req) {
@@ -14,20 +15,23 @@ module.exports = {
 
 		const existingUser = await User.findOne({ email: email });
 		if (existingUser) {
-			const error = new Error("User already exists!");
+			const error = new Error('User already exists!');
 			throw error;
 		}
 
 		const hashedPassword = await bcrypt.hash(password, 12);
 		if (!hashedPassword) {
-			const error = new Error("Password hashing failed!");
+			const error = new Error('Password hashing failed!');
 			throw error;
 		}
+
+		const avatar = await gravatar.url(email);
 
 		const user = new User({
 			email: email,
 			fullname: fullname,
-			password: hashedPassword
+			password: hashedPassword,
+			avatar: avatar
 		});
 
 		const createdUser = await user.save();
@@ -38,14 +42,14 @@ module.exports = {
 	login: async function({ email, password }) {
 		const user = await User.findOne({ email: email });
 		if (!user) {
-			const error = new Error("User not found!");
+			const error = new Error('User not found!');
 			error.statusCode = 401;
 			throw error;
 		}
 
 		const isEqual = await bcrypt.compare(password, user.password);
 		if (!isEqual) {
-			const error = new Error("Password is incorrect!");
+			const error = new Error('Password or E-Mail is incorrect!');
 			error.statusCode = 403;
 			throw error;
 		}
@@ -55,8 +59,8 @@ module.exports = {
 				userId: user._id.toString(),
 				email: user.email
 			},
-			"93ca7df3d65604374fe04fae03c08ae5",
-			{ expiresIn: "1h" }
+			'93ca7df3d65604374fe04fae03c08ae5',
+			{ expiresIn: '1h' }
 		);
 
 		return {
@@ -67,23 +71,23 @@ module.exports = {
 
 	createPost: async function({ postInput }, req) {
 		if (!req.isAuth) {
-			const error = new Error("Not Authenticated!");
+			const error = new Error('Not Authenticated!');
 			error.code = 401;
 			throw error;
 		}
 
 		const user = await User.findById(req.userId);
 		if (!user) {
-			const error = new Error("User not found!");
+			const error = new Error('User not found!');
 			error.code = 401;
 			throw error;
 		}
 
 		const randomNr = Math.floor(Math.random() * 1000 + 1);
 
-		const postSlug = randomNr + "-" + slugify(postInput.title);
+		const postSlug = randomNr + '-' + slugify(postInput.title);
 		if (!postSlug) {
-			const error = new Error("Post slug could not be generated!");
+			const error = new Error('Post slug could not be generated!');
 			error.code = 401;
 			throw error;
 		}
@@ -113,17 +117,17 @@ module.exports = {
 
 	posts: async function(args, req) {
 		if (!req.isAuth) {
-			const error = new Error("Not Authenticated!");
+			const error = new Error('Not Authenticated!');
 			error.code = 401;
 			throw error;
 		}
 
 		const posts = await Post.find()
 			.sort({ createdAt: -1 })
-			.populate("user");
+			.populate('user');
 
 		if (!posts) {
-			const error = new Error("No Posts found!");
+			const error = new Error('No Posts found!');
 			error.statusCode = 404;
 			throw error;
 		}
@@ -142,16 +146,16 @@ module.exports = {
 
 	post: async function(args, req) {
 		if (!req.isAuth) {
-			const error = new Error("Not Authenticated!");
+			const error = new Error('Not Authenticated!');
 			error.code = 401;
 			throw error;
 		}
 
 		const post = await Post.findOne({ slug: args.postSlug }).populate(
-			"user"
+			'user'
 		);
 		if (!post) {
-			const error = new Error("No Posts found!");
+			const error = new Error('No Posts found!');
 			error.statusCode = 404;
 			throw error;
 		}
@@ -166,14 +170,14 @@ module.exports = {
 
 	fetchEditPost: async function(args, req) {
 		if (!req.isAuth) {
-			const error = new Error("Not Authenticated!");
+			const error = new Error('Not Authenticated!');
 			error.code = 401;
 			throw error;
 		}
 
-		const post = await Post.findById(args.postId).populate("user");
+		const post = await Post.findById(args.postId).populate('user');
 		if (!post) {
-			const error = new Error("No Posts found!");
+			const error = new Error('No Posts found!');
 			error.statusCode = 404;
 			throw error;
 		}
@@ -188,7 +192,7 @@ module.exports = {
 
 	deletePost: async function(args, req) {
 		if (!req.isAuth) {
-			const error = new Error("Not Authenticated!");
+			const error = new Error('Not Authenticated!');
 			error.code = 401;
 			throw error;
 		}
@@ -196,14 +200,14 @@ module.exports = {
 		// get post to be deleted
 		const post = await Post.findById(args.postId);
 		if (!post) {
-			const error = new Error("No Posts found!");
+			const error = new Error('No Posts found!');
 			error.statusCode = 404;
 			throw error;
 		}
 
 		// check the user has authorization to delete this post
 		if (post.user.toString() !== req.userId.toString()) {
-			const error = new Error("Not Authorized");
+			const error = new Error('Not Authorized');
 			error.statusCode = 403;
 			throw error;
 		}
@@ -214,7 +218,7 @@ module.exports = {
 		// get user of the post
 		const user = await User.findById(req.userId);
 		if (!user) {
-			const error = new Error("No user was found!");
+			const error = new Error('No user was found!');
 			error.statusCode = 404;
 			throw error;
 		}
@@ -228,7 +232,7 @@ module.exports = {
 
 	updatePost: async function(args, req) {
 		if (!req.isAuth) {
-			const error = new Error("Not Authenticated!");
+			const error = new Error('Not Authenticated!');
 			error.code = 401;
 			throw error;
 		}
@@ -236,14 +240,14 @@ module.exports = {
 		// get post to be deleted
 		const post = await Post.findById(args.postId);
 		if (!post) {
-			const error = new Error("No Posts found!");
+			const error = new Error('No Posts found!');
 			error.statusCode = 404;
 			throw error;
 		}
 
 		// check the user has authorization to update this post
 		if (post.user.toString() !== req.userId.toString()) {
-			const error = new Error("Not Authorized");
+			const error = new Error('Not Authorized');
 			error.statusCode = 403;
 			throw error;
 		}
@@ -265,17 +269,17 @@ module.exports = {
 
 	user: async function(args, req) {
 		if (!req.isAuth) {
-			const error = new Error("Not Authenticated!");
+			const error = new Error('Not Authenticated!');
 			error.code = 401;
 			throw error;
 		}
 
 		const user = await User.findById(req.userId).populate({
-			path: "posts",
-			options: { sort: "-createdAt" }
+			path: 'posts',
+			options: { sort: '-createdAt' }
 		});
 		if (!user) {
-			const error = new Error("No user was found!");
+			const error = new Error('No user was found!');
 			error.statusCode = 404;
 			throw error;
 		}
@@ -288,20 +292,20 @@ module.exports = {
 
 	updateUser: async function(args, req) {
 		if (!req.isAuth) {
-			const error = new Error("Not Authenticated!");
+			const error = new Error('Not Authenticated!');
 			error.code = 401;
 			throw error;
 		}
 
-		const user = await User.findById(req.userId).populate("posts");
+		const user = await User.findById(req.userId).populate('posts');
 		if (!user) {
-			const error = new Error("No user was found!");
+			const error = new Error('No user was found!');
 			error.statusCode = 404;
 			throw error;
 		}
 
 		if (user._id.toString() !== req.userId.toString()) {
-			const error = new Error("Not Authorized");
+			const error = new Error('Not Authorized');
 			error.statusCode = 403;
 			throw error;
 		}
@@ -311,7 +315,7 @@ module.exports = {
 		});
 		if (existingUser) {
 			if (existingUser._id.toString() !== req.userId.toString()) {
-				const error = new Error("User already exists!");
+				const error = new Error('User already exists!');
 				error.statusCode = 500;
 				throw error;
 			}
@@ -320,7 +324,6 @@ module.exports = {
 		user.fullname = args.userInput.fullname;
 		user.email = args.userInput.email;
 		user.bio = args.userInput.bio;
-		user.avatar = args.userInput.avatar || user.avatar;
 
 		const updatedUser = await user.save();
 
@@ -332,7 +335,7 @@ module.exports = {
 
 	searchPosts: async function(args, req) {
 		if (!req.isAuth) {
-			const error = new Error("Not Authenticated!");
+			const error = new Error('Not Authenticated!');
 			error.code = 401;
 			throw error;
 		}
@@ -340,19 +343,19 @@ module.exports = {
 		const posts = await Post.find()
 			.or([
 				{
-					title: { $regex: args.keyword, $options: "i" }
+					title: { $regex: args.keyword, $options: 'i' }
 				},
 				{
-					excerpt: { $regex: args.keyword, $options: "i" }
+					excerpt: { $regex: args.keyword, $options: 'i' }
 				},
 				{
-					content: { $regex: args.keyword, $options: "i" }
+					content: { $regex: args.keyword, $options: 'i' }
 				}
 			])
 			.sort({ title: 1 });
 
 		if (!posts) {
-			const error = new Error("No Posts found for given search result!");
+			const error = new Error('No Posts found for given search result!');
 			error.statusCode = 404;
 			throw error;
 		}
@@ -371,21 +374,21 @@ module.exports = {
 
 	changePassword: async function(args, req) {
 		if (!req.isAuth) {
-			const error = new Error("Not Authenticated!");
+			const error = new Error('Not Authenticated!');
 			error.code = 401;
 			throw error;
 		}
 
 		const user = await User.findById(req.userId);
 		if (!user) {
-			const error = new Error("No user was found!");
+			const error = new Error('No user was found!');
 			error.statusCode = 404;
 			throw error;
 		}
 
 		const hashedPassword = await bcrypt.hash(args.newPassword, 12);
 		if (!hashedPassword) {
-			const error = new Error("Password hashing failed!");
+			const error = new Error('Password hashing failed!');
 			throw error;
 		}
 

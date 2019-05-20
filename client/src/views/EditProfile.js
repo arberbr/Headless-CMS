@@ -1,15 +1,13 @@
-import React, { Component } from "react";
-import Swal from "sweetalert2";
+import React, { Component } from 'react';
+import Swal from 'sweetalert2';
 
-import validateEmail from "../utils/validateEmail";
-import fileUpload from "../utils/fileUpload";
+import validateEmail from '../utils/validateEmail';
 
 class EditProfile extends Component {
 	state = {
-		fullname: "",
-		email: "",
-		bio: "",
-		avatar: ""
+		fullname: '',
+		email: '',
+		bio: ''
 	};
 
 	componentDidMount() {
@@ -25,7 +23,6 @@ class EditProfile extends Component {
 						fullname
 						email
 						bio
-						avatar
 					}
 				}
 			`,
@@ -35,9 +32,9 @@ class EditProfile extends Component {
 		};
 
 		fetch(process.env.REACT_APP_BACKEND_URI, {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				Authorization: this.props.token
 			},
 			body: JSON.stringify(graphqlQuery)
@@ -47,21 +44,20 @@ class EditProfile extends Component {
 			})
 			.then(resData => {
 				if (resData.errors) {
-					throw new Error("Fetching user data failed!");
+					throw new Error('Fetching user data failed!');
 				}
 				this.setState({
 					fullname: resData.data.user.fullname,
 					email: resData.data.user.email,
-					bio: resData.data.user.bio,
-					avatar: resData.data.user.avatar
+					bio: resData.data.user.bio
 				});
 			})
 			.catch(error => {
 				Swal.fire({
-					title: "Error!",
+					title: 'Error!',
 					text: error.message,
-					type: "error",
-					confirmButtonText: "Ok"
+					type: 'error',
+					confirmButtonText: 'Ok'
 				});
 			});
 	};
@@ -71,22 +67,21 @@ class EditProfile extends Component {
 
 		if (!validateEmail(userData.email)) {
 			Swal.fire({
-				title: "Error!",
-				text: "Enter a valid E-Mail address!",
-				type: "error",
-				confirmButtonText: "Ok"
+				title: 'Error!',
+				text: 'Enter a valid E-Mail address!',
+				type: 'error',
+				confirmButtonText: 'Ok'
 			});
 			return;
 		}
 
 		const graphqlQuery = {
 			query: `
-				mutation UpdateUser($userId: ID!, $fullname: String!, $email: String!, $bio: String, $avatar: String) {
+				mutation UpdateUser($userId: ID!, $fullname: String!, $email: String!, $bio: String) {
 					updateUser(userId: $userId, userInput: {
 						fullname: $fullname,
 						email: $email,
 						bio: $bio,
-						avatar: $avatar
 					}) {
 						fullname
 						email
@@ -97,15 +92,14 @@ class EditProfile extends Component {
 				userId: this.props.userId,
 				fullname: userData.fullname,
 				email: userData.email,
-				bio: userData.bio,
-				avatar: userData.avatar
+				bio: userData.bio
 			}
 		};
 
 		fetch(process.env.REACT_APP_BACKEND_URI, {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				Authorization: this.props.token
 			},
 			body: JSON.stringify(graphqlQuery)
@@ -115,23 +109,23 @@ class EditProfile extends Component {
 			})
 			.then(resData => {
 				if (resData.errors) {
-					throw new Error("Failed to update user!");
+					throw new Error('Failed to update user!');
 				}
 				Swal.fire({
-					title: "Success!",
-					text: "User updated!",
-					type: "success",
-					confirmButtonText: "Ok"
+					title: 'Success!',
+					text: 'User updated!',
+					type: 'success',
+					confirmButtonText: 'Ok'
 				}).then(() => {
-					this.props.history.replace("/account");
+					this.props.history.replace('/account');
 				});
 			})
 			.catch(error => {
 				Swal.fire({
-					title: "Error!",
+					title: 'Error!',
 					text: error.message,
-					type: "error",
-					confirmButtonText: "Ok"
+					type: 'error',
+					confirmButtonText: 'Ok'
 				});
 			});
 	};
@@ -142,19 +136,11 @@ class EditProfile extends Component {
 		});
 	};
 
-	handleFilePicker = async event => {
-		const files = event.target.files;
-		const fileUploadRes = await fileUpload(files);
-		this.setState({
-			avatar: fileUploadRes.secure_url
-		});
-	};
-
 	render() {
 		return (
 			<div className="page-account">
 				<div className="card">
-					<h1>Editing Profile</h1>
+					<h1>Edit Profile</h1>
 					<form
 						method="POST"
 						action=""
@@ -162,8 +148,7 @@ class EditProfile extends Component {
 							this.submitHandler(event, {
 								fullname: this.state.fullname,
 								email: this.state.email,
-								bio: this.state.bio,
-								avatar: this.state.avatar
+								bio: this.state.bio
 							})
 						}
 					>
@@ -178,7 +163,7 @@ class EditProfile extends Component {
 								required
 								defaultValue={this.state.fullname}
 								onChange={event =>
-									this.handleInputChanger(event, "fullname")
+									this.handleInputChanger(event, 'fullname')
 								}
 							/>
 						</div>
@@ -193,7 +178,7 @@ class EditProfile extends Component {
 								required
 								defaultValue={this.state.email}
 								onChange={event =>
-									this.handleInputChanger(event, "email")
+									this.handleInputChanger(event, 'email')
 								}
 							/>
 						</div>
@@ -204,17 +189,8 @@ class EditProfile extends Component {
 								id="bio"
 								value={this.state.bio}
 								onChange={event =>
-									this.handleInputChanger(event, "bio")
+									this.handleInputChanger(event, 'bio')
 								}
-							/>
-						</div>
-						<div>
-							<label htmlFor="avatar">Avatar</label>
-							<input
-								type="file"
-								name="avatar"
-								id="avatar"
-								onChange={event => this.handleFilePicker(event)}
 							/>
 						</div>
 						<button type="submit">Update User</button>

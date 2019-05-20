@@ -1,7 +1,6 @@
 {
 	"env": {
 		"PORT": 8080,
-		"MONGODB": "mongodb+srv://arber:update6347@nodejs-course-7sl4p.mongodb.net/cms",
-		"BACKEND_URI": "http://localhost:8080/"
+		"MONGODB": "mongodb+srv://arber:update6347@nodejs-course-7sl4p.mongodb.net/cms"
 	}
 }

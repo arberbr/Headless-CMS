@@ -22,7 +22,7 @@ const userSchema = new Schema({
 	},
 	avatar: {
 		type: String,
-		default: process.env.BACKEND_URI + 'images/avatar.png'
+		required: true
 	},
 	posts: [
 		{

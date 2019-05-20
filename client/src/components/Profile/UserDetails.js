@@ -1,16 +1,13 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const UserPosts = props => {
-	let userAvatar =
-		props.user.avatar ||
-		process.env.REACT_APP_BACKEND_ASSETS + "images/avatar.png";
 	return (
 		<div className="card">
 			<h1>{props.user.fullname}</h1>
 			<div className="user-details">
 				<div className="user-image">
-					<img src={userAvatar} alt={props.user.fullname} />
+					<img src={props.user.avatar} alt={props.user.fullname} />
 				</div>
 				<div className="user-info">
 					<p>
@@ -22,7 +19,7 @@ const UserPosts = props => {
 				</div>
 			</div>
 			<div className="user-actions">
-				<Link to="/edit-profile">edit profile</Link> /{" "}
+				<Link to="/edit-profile">edit profile</Link> -{' '}
 				<Link to="/change-password">change password</Link>
 			</div>
 		</div>

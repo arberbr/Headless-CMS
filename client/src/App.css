@@ -191,14 +191,21 @@ form button:disabled {
 }
 
 .user-details .user-image img {
-	width: 100px;
-	height: 100px;
+	width: 80px;
+	height: 80px;
 	object-fit: cover;
 	border-radius: 50%;
 }
 
 .user-details .user-info {
 	padding: 0 15px;
+}
+
+.user-actions {
+	position: relative;
+	display: block;
+	width: 100%;
+	margin-top: 20px;
 }
 
 /* Post Teaser */
