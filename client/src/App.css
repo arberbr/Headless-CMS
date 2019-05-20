@@ -22,6 +22,13 @@ main {
 	padding: 15px;
 }
 
+input[type='text'],
+input[type='email'],
+input[type='url'],
+input[type='password'] {
+	width: 100%;
+}
+
 form {
 	position: relative;
 	display: block;
@@ -351,4 +358,24 @@ form button:disabled {
 	height: 80px;
 	object-fit: cover;
 	border-radius: 50%;
+}
+
+.password-strength-meter {
+	border: none;
+}
+
+.password-strength-meter input {
+	padding: 7px 6px;
+	border: 1px solid #ddd;
+}
+
+.password-strength-meter .ReactPasswordStrength-strength-desc {
+	width: 25%;
+	padding: 7px 6px;
+	top: 3px;
+}
+
+.password-strength-meter .ReactPasswordStrength-strength-bar {
+	width: 100%;
+	margin-left: 1px;
 }

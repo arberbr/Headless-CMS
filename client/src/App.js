@@ -144,6 +144,16 @@ class App extends Component {
 			return;
 		}
 
+		if (!authData.passwordValid) {
+			Swal.fire({
+				title: 'Error!',
+				text: 'Please use a hard-to-guess password!',
+				type: 'error',
+				confirmButtonText: 'Ok'
+			});
+			return;
+		}
+
 		const graphqlQuery = {
 			query: `
 				mutation CreateUser($email: String!, $fullname: String!, $password: String!) {

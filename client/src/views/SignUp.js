@@ -1,15 +1,26 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import ReactPasswordStrength from 'react-password-strength';
 
 class SignUp extends Component {
 	state = {
-		email: "",
-		fullname: "",
-		password: ""
+		email: '',
+		fullname: '',
+		password: '',
+		passwordScore: '',
+		passwordValid: false
 	};
 
 	handleInputChanger = (event, element) => {
 		this.setState({
 			[element]: event.target.value
+		});
+	};
+
+	handleChange = event => {
+		this.setState({
+			passwordValid: event.isValid,
+			passwordScore: event.scores,
+			password: event.password
 		});
 	};
 
@@ -24,7 +35,9 @@ class SignUp extends Component {
 							this.props.onSignup(event, {
 								email: this.state.email,
 								fullname: this.state.fullname,
-								password: this.state.password
+								password: this.state.password,
+								passwordValid: this.state.passwordValid,
+								passwordScore: this.state.passwordScore
 							})
 						}
 					>
@@ -38,7 +51,7 @@ class SignUp extends Component {
 								id="email"
 								required
 								onChange={event =>
-									this.handleInputChanger(event, "email")
+									this.handleInputChanger(event, 'email')
 								}
 							/>
 						</div>
@@ -52,7 +65,7 @@ class SignUp extends Component {
 								id="fullname"
 								required
 								onChange={event =>
-									this.handleInputChanger(event, "fullname")
+									this.handleInputChanger(event, 'fullname')
 								}
 							/>
 						</div>
@@ -60,14 +73,23 @@ class SignUp extends Component {
 							<label htmlFor="password">
 								Password <span className="required">*</span>
 							</label>
-							<input
-								type="password"
-								name="password"
-								id="password"
-								required
-								onChange={event =>
-									this.handleInputChanger(event, "password")
+							<ReactPasswordStrength
+								className="password-strength-meter"
+								minLength={8}
+								minScore={3}
+								scoreWords={[
+									'very weak',
+									'weak',
+									'good',
+									'strong',
+									'very strong'
+								]}
+								changeCallback={event =>
+									this.handleChange(event)
 								}
+								inputProps={{
+									name: 'password'
+								}}
 							/>
 						</div>
 						<button type="submit">Signup</button>
