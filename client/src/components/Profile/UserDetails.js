@@ -2,6 +2,22 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const UserPosts = props => {
+	let userGithub = props.user.github ? (
+		<a href={props.user.github} target="_blank" rel="noopener noreferrer">
+			<span class="fa fa-github" />
+		</a>
+	) : (
+		''
+	);
+
+	let userWebsite = props.user.website ? (
+		<a href={props.user.website} target="_blank" rel="noopener noreferrer">
+			<span class="fa fa-globe" />
+		</a>
+	) : (
+		''
+	);
+
 	return (
 		<div className="card">
 			<h1>{props.user.fullname}</h1>
@@ -15,6 +31,9 @@ const UserPosts = props => {
 					</p>
 					<p>
 						<b>Bio:</b> {props.user.bio}
+					</p>
+					<p className="user-socials">
+						{userGithub} {userWebsite}
 					</p>
 				</div>
 			</div>

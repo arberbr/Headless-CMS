@@ -7,7 +7,9 @@ class EditProfile extends Component {
 	state = {
 		fullname: '',
 		email: '',
-		bio: ''
+		bio: '',
+		github: '',
+		website: ''
 	};
 
 	componentDidMount() {
@@ -23,6 +25,8 @@ class EditProfile extends Component {
 						fullname
 						email
 						bio
+						github
+						website
 					}
 				}
 			`,
@@ -49,7 +53,9 @@ class EditProfile extends Component {
 				this.setState({
 					fullname: resData.data.user.fullname,
 					email: resData.data.user.email,
-					bio: resData.data.user.bio
+					bio: resData.data.user.bio,
+					github: resData.data.user.github,
+					website: resData.data.user.website
 				});
 			})
 			.catch(error => {
@@ -77,11 +83,13 @@ class EditProfile extends Component {
 
 		const graphqlQuery = {
 			query: `
-				mutation UpdateUser($userId: ID!, $fullname: String!, $email: String!, $bio: String) {
+				mutation UpdateUser($userId: ID!, $fullname: String!, $email: String!, $bio: String, $github: String, $website: String) {
 					updateUser(userId: $userId, userInput: {
 						fullname: $fullname,
 						email: $email,
 						bio: $bio,
+						github: $github,
+						website: $website
 					}) {
 						fullname
 						email
@@ -92,7 +100,9 @@ class EditProfile extends Component {
 				userId: this.props.userId,
 				fullname: userData.fullname,
 				email: userData.email,
-				bio: userData.bio
+				bio: userData.bio,
+				github: userData.github,
+				website: userData.website
 			}
 		};
 
@@ -148,7 +158,9 @@ class EditProfile extends Component {
 							this.submitHandler(event, {
 								fullname: this.state.fullname,
 								email: this.state.email,
-								bio: this.state.bio
+								bio: this.state.bio,
+								github: this.state.github,
+								website: this.state.website
 							})
 						}
 					>
@@ -190,6 +202,32 @@ class EditProfile extends Component {
 								value={this.state.bio}
 								onChange={event =>
 									this.handleInputChanger(event, 'bio')
+								}
+							/>
+						</div>
+						<div>
+							<label htmlFor="github">Github</label>
+							<input
+								type="url"
+								name="github"
+								id="github"
+								placeholder="https://github.com/<username>"
+								defaultValue={this.state.github}
+								onChange={event =>
+									this.handleInputChanger(event, 'github')
+								}
+							/>
+						</div>
+						<div>
+							<label htmlFor="website">Website</label>
+							<input
+								type="url"
+								name="website"
+								id="website"
+								placeholder="https://example.com"
+								defaultValue={this.state.website}
+								onChange={event =>
+									this.handleInputChanger(event, 'website')
 								}
 							/>
 						</div>

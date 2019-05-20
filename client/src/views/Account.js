@@ -90,6 +90,8 @@ class Account extends Component {
 						}
 						bio
 						avatar
+						github
+						website
 					}
 				}
 			`,
@@ -119,7 +121,9 @@ class Account extends Component {
 					email: resData.data.user.email,
 					posts: resData.data.user.posts,
 					bio: resData.data.user.bio,
-					avatar: resData.data.user.avatar
+					avatar: resData.data.user.avatar,
+					github: resData.data.user.github,
+					website: resData.data.user.website
 				});
 			})
 			.catch(error => {

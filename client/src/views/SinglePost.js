@@ -13,6 +13,8 @@ class SinglePost extends Component {
 		userFullName: '',
 		userBio: '',
 		userAvatar: '',
+		userGithub: '',
+		userWebsite: '',
 		createdAt: ''
 	};
 
@@ -33,6 +35,8 @@ class SinglePost extends Component {
 							fullname
 							bio
 							avatar
+							github
+							website
                         }
                         createdAt
                     }
@@ -72,7 +76,9 @@ class SinglePost extends Component {
 					createdAt: formattedDate,
 					userFullName: resData.data.post.user.fullname,
 					userBio: resData.data.post.user.bio,
-					userAvatar: resData.data.post.user.avatar
+					userAvatar: resData.data.post.user.avatar,
+					userGithub: resData.data.post.user.github,
+					userWebsite: resData.data.post.user.website
 				});
 			})
 			.catch(error => {
@@ -86,6 +92,30 @@ class SinglePost extends Component {
 	}
 
 	render() {
+		let userGithub = this.state.userGithub ? (
+			<a
+				href={this.state.userGithub}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<span class="fa fa-github" />
+			</a>
+		) : (
+			''
+		);
+
+		let userWebsite = this.state.userWebsite ? (
+			<a
+				href={this.state.userWebsite}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<span class="fa fa-globe" />
+			</a>
+		) : (
+			''
+		);
+
 		return (
 			<div className="page-single-post">
 				<div className="card-post">
@@ -117,7 +147,10 @@ class SinglePost extends Component {
 						</div>
 						<div className="post-author-info">
 							<h4>{this.state.userFullName}</h4>
-							{this.state.userBio}
+							<p>{this.state.userBio}</p>
+							<p className="user-socials">
+								{userGithub} {userWebsite}
+							</p>
 						</div>
 					</div>
 				</div>
