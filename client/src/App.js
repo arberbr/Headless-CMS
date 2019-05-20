@@ -144,6 +144,16 @@ class App extends Component {
 			return;
 		}
 
+		if (!authData.fullname) {
+			Swal.fire({
+				title: 'Error!',
+				text: 'Enter your full name!',
+				type: 'error',
+				confirmButtonText: 'Ok'
+			});
+			return;
+		}
+
 		if (!authData.passwordValid) {
 			Swal.fire({
 				title: 'Error!',

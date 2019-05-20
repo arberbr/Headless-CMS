@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const UserPosts = props => {
 	let userGithub = props.user.github ? (
 		<a href={props.user.github} target="_blank" rel="noopener noreferrer">
-			<span class="fa fa-github" />
+			<span className="fa fa-github" />
 		</a>
 	) : (
 		''
@@ -12,7 +12,7 @@ const UserPosts = props => {
 
 	let userWebsite = props.user.website ? (
 		<a href={props.user.website} target="_blank" rel="noopener noreferrer">
-			<span class="fa fa-globe" />
+			<span className="fa fa-globe" />
 		</a>
 	) : (
 		''

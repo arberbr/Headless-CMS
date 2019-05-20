@@ -98,7 +98,7 @@ class SinglePost extends Component {
 				target="_blank"
 				rel="noopener noreferrer"
 			>
-				<span class="fa fa-github" />
+				<span className="fa fa-github" />
 			</a>
 		) : (
 			''
@@ -110,7 +110,7 @@ class SinglePost extends Component {
 				target="_blank"
 				rel="noopener noreferrer"
 			>
-				<span class="fa fa-globe" />
+				<span className="fa fa-globe" />
 			</a>
 		) : (
 			''

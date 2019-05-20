@@ -71,6 +71,16 @@ class EditProfile extends Component {
 	submitHandler = (event, userData) => {
 		event.preventDefault();
 
+		if (!userData.fullname) {
+			Swal.fire({
+				title: 'Error!',
+				text: 'Enter your full name!',
+				type: 'error',
+				confirmButtonText: 'Ok'
+			});
+			return;
+		}
+
 		if (!validateEmail(userData.email)) {
 			Swal.fire({
 				title: 'Error!',

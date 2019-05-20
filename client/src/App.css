@@ -225,7 +225,8 @@ form button:disabled {
 .card-post-teaser-image {
 	width: 100%;
 	max-width: 100%;
-	height: auto;
+	height: 250px;
+	object-fit: cover;
 	border-top-left-radius: 5px;
 	border-top-right-radius: 5px;
 }
