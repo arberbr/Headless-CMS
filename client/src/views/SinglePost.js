@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Swal from 'sweetalert2';
 
 import timeToRead from '../utils/timeToRead';
+import formatDate from '../utils/formatDate';
 
 class SinglePost extends Component {
 	state = {
@@ -57,14 +58,18 @@ class SinglePost extends Component {
 				if (resData.errors) {
 					throw new Error('Fetching Post Failed!');
 				}
+
+				const formattedDate = formatDate(resData.data.post.createdAt);
+				if (!formattedDate) {
+					throw new Error('Could not format date!');
+				}
+
 				this.setState({
 					title: resData.data.post.title,
 					excerpt: resData.data.post.excerpt,
 					content: resData.data.post.content,
 					image: resData.data.post.image,
-					createdAt: new Date(
-						resData.data.post.createdAt
-					).toLocaleDateString('en-US'),
+					createdAt: formattedDate,
 					userFullName: resData.data.post.user.fullname,
 					userBio: resData.data.post.user.bio,
 					userAvatar: resData.data.post.user.avatar

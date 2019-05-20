@@ -1,4 +1,4 @@
-const { buildSchema } = require("graphql");
+const { buildSchema } = require('graphql');
 
 module.exports = buildSchema(`
     type Post {
@@ -19,6 +19,8 @@ module.exports = buildSchema(`
         password: String
         posts: [Post]!
         bio: String
+        github: String
+        website: String
         avatar: String
     }
 
@@ -35,15 +37,14 @@ module.exports = buildSchema(`
         email: String!
         fullname: String!
         password: String!
-        bio: String
-        avatar: String
     }
 
     input UserAccountData {
         email: String!
         fullname: String!
         bio: String
-        avatar: String
+        github: String
+        website: String
     }
 
     input PostInputData {

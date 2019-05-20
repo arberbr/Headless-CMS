@@ -20,6 +20,8 @@ const userSchema = new Schema({
 		type: String,
 		default: 'Hello everyone!'
 	},
+	github: String,
+	website: String,
 	avatar: {
 		type: String,
 		required: true

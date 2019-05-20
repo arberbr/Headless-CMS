@@ -25,13 +25,13 @@ module.exports = {
 			throw error;
 		}
 
-		const avatar = await gravatar.url(email);
+		const fetchedAvatar = await gravatar.url(email);
 
 		const user = new User({
 			email: email,
 			fullname: fullname,
 			password: hashedPassword,
-			avatar: avatar
+			avatar: fetchedAvatar
 		});
 
 		const createdUser = await user.save();
@@ -297,7 +297,7 @@ module.exports = {
 			throw error;
 		}
 
-		const user = await User.findById(req.userId).populate('posts');
+		const user = await User.findById(req.userId);
 		if (!user) {
 			const error = new Error('No user was found!');
 			error.statusCode = 404;
@@ -324,6 +324,8 @@ module.exports = {
 		user.fullname = args.userInput.fullname;
 		user.email = args.userInput.email;
 		user.bio = args.userInput.bio;
+		user.github = args.userInput.github;
+		user.website = args.userInput.website;
 
 		const updatedUser = await user.save();
 
