@@ -1,21 +1,26 @@
-import React, { Component } from 'react';
-import Swal from 'sweetalert2';
+import React, { Component } from "react";
+import Swal from "sweetalert2";
 
-import timeToRead from '../utils/timeToRead';
-import formatDate from '../utils/formatDate';
+import timeToRead from "../utils/timeToRead";
+import formatDate from "../utils/formatDate";
 
 class SinglePost extends Component {
 	state = {
-		title: '',
-		excerpt: '',
-		content: '',
-		image: '',
-		userFullName: '',
-		userBio: '',
-		userAvatar: '',
-		userGithub: '',
-		userWebsite: '',
-		createdAt: ''
+		title: "",
+		excerpt: "",
+		content: "",
+		image: "",
+		userFullName: "",
+		userBio: "",
+		userAvatar: "",
+		createdAt: "",
+		socials: {
+			github: "",
+			website: "",
+			linkedin: "",
+			facebook: "",
+			stackoverflow: ""
+		}
 	};
 
 	componentDidMount() {
@@ -53,9 +58,9 @@ class SinglePost extends Component {
 		};
 
 		fetch(process.env.REACT_APP_BACKEND_URI, {
-			method: 'POST',
+			method: "POST",
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				Authorization: this.props.token
 			},
 			body: JSON.stringify(graphqlQuery)
@@ -65,13 +70,15 @@ class SinglePost extends Component {
 			})
 			.then(resData => {
 				if (resData.errors) {
-					throw new Error('Fetching Post Failed!');
+					throw new Error("Fetching Post Failed!");
 				}
 
 				const formattedDate = formatDate(resData.data.post.createdAt);
 				if (!formattedDate) {
-					throw new Error('Could not format date!');
+					throw new Error("Could not format date!");
 				}
+
+				console.log(resData.data);
 
 				this.setState({
 					title: resData.data.post.title,
@@ -82,43 +89,84 @@ class SinglePost extends Component {
 					userFullName: resData.data.post.user.fullname,
 					userBio: resData.data.post.user.bio,
 					userAvatar: resData.data.post.user.avatar,
-					userGithub: resData.data.post.user.github,
-					userWebsite: resData.data.post.user.website
+					socials:
+						resData.data.post.user.socials || this.state.socials
 				});
 			})
 			.catch(error => {
 				Swal.fire({
-					title: 'Error!',
+					title: "Error!",
 					text: error.message,
-					type: 'error',
-					confirmButtonText: 'Ok'
+					type: "error",
+					confirmButtonText: "Ok"
 				});
 			});
 	}
 
 	render() {
-		let userGithub = this.state.userGithub ? (
+		let userGithub = this.state.socials.github ? (
 			<a
-				href={this.state.userGithub}
+				href={this.state.socials.github}
 				target="_blank"
 				rel="noopener noreferrer"
+				title="GitHub"
 			>
 				<span className="fa fa-github" />
 			</a>
 		) : (
-			''
+			""
 		);
 
-		let userWebsite = this.state.userWebsite ? (
+		let userWebsite = this.state.socials.website ? (
 			<a
-				href={this.state.userWebsite}
+				href={this.state.socials.website}
 				target="_blank"
 				rel="noopener noreferrer"
+				title="Website"
 			>
 				<span className="fa fa-globe" />
 			</a>
 		) : (
-			''
+			""
+		);
+
+		let userLinkedIn = this.state.socials.linkedin ? (
+			<a
+				href={this.state.socials.linkedin}
+				target="_blank"
+				rel="noopener noreferrer"
+				title="LinkedIn"
+			>
+				<span className="fa fa-linkedin" />
+			</a>
+		) : (
+			""
+		);
+
+		let userFacebook = this.state.socials.facebook ? (
+			<a
+				href={this.state.socials.facebook}
+				target="_blank"
+				rel="noopener noreferrer"
+				title="Facebook"
+			>
+				<span className="fa fa-facebook" />
+			</a>
+		) : (
+			""
+		);
+
+		let userStackOverflow = this.state.socials.stackoverflow ? (
+			<a
+				href={this.state.socials.stackoverflow}
+				target="_blank"
+				rel="noopener noreferrer"
+				title="StackOverflow"
+			>
+				<span className="fa fa-stack-overflow" />
+			</a>
+		) : (
+			""
 		);
 
 		return (
@@ -154,7 +202,8 @@ class SinglePost extends Component {
 							<h4>{this.state.userFullName}</h4>
 							<p>{this.state.userBio}</p>
 							<p className="user-socials">
-								{userGithub} {userWebsite}
+								{userGithub} {userWebsite} {userLinkedIn}{" "}
+								{userFacebook} {userStackOverflow}
 							</p>
 						</div>
 					</div>
