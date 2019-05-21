@@ -349,9 +349,43 @@ module.exports = {
 			throw error;
 		}
 
-		console.log('WIP');
+		const user = await User.findById(req.userId);
+		if (!user) {
+			const error = new Error('No User found!');
+			error.statusCode = 401;
+			throw error;
+		}
 
-		return;
+		if (args.userId.toString() !== req.userId.toString()) {
+			const error = new Error('Not Authorized');
+			error.statusCode = 403;
+			throw error;
+		}
+
+		// TODO: Logic to handle user social profile saving
+		try {
+			const socials = await Social.findOneAndUpdate(
+				{ user: req.userId },
+				{
+					$set: {
+						github: args.userSocials.github,
+						website: args.userSocials.website,
+						linkedin: args.userSocials.linkedin,
+						facebook: args.userSocials.facebook,
+						stackoverflow: args.userSocials.stackoverflow
+					}
+				},
+				{ upsert: true }
+			);
+
+			user.socials = socials;
+			await user.save();
+			return true;
+		} catch (err) {
+			const error = new Error('Something went wrong');
+			error.statusCode = 403;
+			throw error;
+		}
 	},
 
 	searchPosts: async function(args, req) {

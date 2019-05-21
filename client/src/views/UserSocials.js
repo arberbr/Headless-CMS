@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Swal from 'sweetalert2';
 
 class UserSocials extends Component {
 	state = {
@@ -14,13 +15,120 @@ class UserSocials extends Component {
 	}
 
 	loadUserSocials = () => {
-		console.log('fired');
+		const graphqlQuery = {
+			query: `
+				query FetchUserSocials($id: ID!) {
+					user(id: $id) {
+						socials {
+							github
+							website
+							linkedin
+							facebook
+							stackoverflow
+						}
+					}
+				}
+			`,
+			variables: {
+				id: this.props.userId
+			}
+		};
+
+		fetch(process.env.REACT_APP_BACKEND_URI, {
+			method: 'POST',
+			headers: {
+				Authorization: this.props.token,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(graphqlQuery)
+		})
+			.then(res => {
+				return res.json();
+			})
+			.then(resData => {
+				if (resData.errors) {
+					throw new Error('Could not fetch User Social Profiles!');
+				}
+
+				console.log(resData);
+
+				this.setState({
+					github: resData.data.user.socials.github,
+					website: resData.data.user.socials.website,
+					linkedin: resData.data.user.socials.linkedin,
+					facebook: resData.data.user.socials.facebook,
+					stackoverflow: resData.data.user.socials.stackoverflow
+				});
+			})
+			.catch(error => {
+				Swal.fire({
+					title: 'Error!',
+					text: error.message,
+					type: 'error',
+					confirmButtonText: 'Ok'
+				});
+			});
 	};
 
 	submitHandler = (event, userSocials) => {
 		event.preventDefault();
 
-		console.log('clicked');
+		const graphqlQuery = {
+			query: `
+				mutation UpdateUserSocials($userId: ID!, $github: String, $website: String, $linkedin: String, $facebook: String, $stackoverflow: String) {
+					updateUserSocials(userId: $userId, userSocials: {
+						github: $github,
+						website: $website,
+						linkedin: $linkedin,
+						facebook: $facebook,
+						stackoverflow: $stackoverflow
+					})
+					
+				}
+			`,
+			variables: {
+				userId: this.props.userId,
+				github: userSocials.github,
+				website: userSocials.website,
+				linkedin: userSocials.linkedin,
+				facebook: userSocials.facebook,
+				stackoverflow: userSocials.stackoverflow
+			}
+		};
+
+		fetch(process.env.REACT_APP_BACKEND_URI, {
+			method: 'POST',
+			headers: {
+				Authorization: this.props.token,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(graphqlQuery)
+		})
+			.then(res => {
+				return res.json();
+			})
+			.then(resData => {
+				if (resData.errors) {
+					throw new Error('Could not update User Social Profiles!');
+				}
+
+				Swal.fire({
+					title: 'Success!',
+					text: 'User Social Profiles updated!',
+					type: 'success',
+					confirmButtonText: 'Ok'
+				}).then(() => {
+					this.props.history.replace('/account');
+				});
+			})
+			.catch(error => {
+				Swal.fire({
+					title: 'Error!',
+					text: error.message,
+					type: 'error',
+					confirmButtonText: 'Ok'
+				});
+			});
 	};
 
 	handleInputChanger = (event, element) => {
@@ -53,7 +161,6 @@ class UserSocials extends Component {
 								type="url"
 								name="github"
 								id="github"
-								required
 								defaultValue={this.state.github}
 								onChange={event =>
 									this.handleInputChanger(event, 'github')
@@ -67,7 +174,6 @@ class UserSocials extends Component {
 								type="url"
 								name="website"
 								id="website"
-								required
 								defaultValue={this.state.website}
 								onChange={event =>
 									this.handleInputChanger(event, 'website')
@@ -80,7 +186,6 @@ class UserSocials extends Component {
 								type="url"
 								name="linkedin"
 								id="linkedin"
-								required
 								defaultValue={this.state.linkedin}
 								onChange={event =>
 									this.handleInputChanger(event, 'linkedin')
@@ -93,7 +198,6 @@ class UserSocials extends Component {
 								type="url"
 								name="facebook"
 								id="facebook"
-								required
 								defaultValue={this.state.facebook}
 								onChange={event =>
 									this.handleInputChanger(event, 'facebook')
@@ -106,7 +210,6 @@ class UserSocials extends Component {
 								type="url"
 								name="stackoverflow"
 								id="stackoverflow"
-								required
 								defaultValue={this.state.stackoverflow}
 								onChange={event =>
 									this.handleInputChanger(

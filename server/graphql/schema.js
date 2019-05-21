@@ -81,7 +81,7 @@ module.exports = buildSchema(`
         deletePost(postId: ID!) : Boolean
         updatePost(postId: ID!, postInput: PostInputData!) : Post!
         updateUser(userId: ID!, userInput: UserAccountData!) : User!
-        updateUserSocials(userId: ID, userSocials: SocialInputData) : User!
+        updateUserSocials(userId: ID, userSocials: SocialInputData) : Boolean
         changePassword(newPassword: String!) : Boolean
     }
 

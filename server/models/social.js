@@ -6,11 +6,26 @@ const userSocialSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: 'User'
 	},
-	github: String,
-	website: String,
-	linkedin: String,
-	facebook: String,
-	stackoverflow: String
+	github: {
+		type: String,
+		default: ''
+	},
+	website: {
+		type: String,
+		default: ''
+	},
+	linkedin: {
+		type: String,
+		default: ''
+	},
+	facebook: {
+		type: String,
+		default: ''
+	},
+	stackoverflow: {
+		type: String,
+		default: ''
+	}
 });
 
 module.exports = mongoose.model('Social', userSocialSchema);

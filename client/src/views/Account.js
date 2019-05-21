@@ -15,13 +15,89 @@ class Account extends Component {
 		avatar: '',
 		work: '',
 		location: '',
+		socials: {
+			github: '',
+			website: '',
+			linkedin: '',
+			facebook: '',
+			stackoverflow: ''
+		},
 		joined: ''
 	};
 
 	componentDidMount() {
-		if (!this.props.userId) return;
-		this.loadUserPosts();
+		this.loadUserData();
 	}
+
+	loadUserData = () => {
+		let graphqlQuery = {
+			query: `
+				query FetchUser($id: ID!) {
+					user(id: $id) {
+						createdAt
+						fullname
+						email
+						posts {
+							_id
+							title
+							slug
+						}
+						bio
+						avatar
+						work
+						location
+						socials {
+							github
+							website
+							linkedin
+							facebook
+							stackoverflow
+						}
+					}
+				}
+			`,
+			variables: {
+				id: this.props.userId
+			}
+		};
+
+		fetch(process.env.REACT_APP_BACKEND_URI, {
+			method: 'POST',
+			headers: {
+				Authorization: this.props.token,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(graphqlQuery)
+		})
+			.then(res => {
+				return res.json();
+			})
+			.then(resData => {
+				if (resData.errors) {
+					throw new Error('Fetching user data failed!');
+				}
+
+				this.setState({
+					fullname: resData.data.user.fullname,
+					email: resData.data.user.email,
+					posts: resData.data.user.posts,
+					bio: resData.data.user.bio,
+					avatar: resData.data.user.avatar,
+					socials: resData.data.user.socials || this.state.socials,
+					work: resData.data.user.work,
+					location: resData.data.user.location,
+					joined: formatDate(resData.data.user.createdAt)
+				});
+			})
+			.catch(error => {
+				Swal.fire({
+					title: 'Error!',
+					text: error.message,
+					type: 'error',
+					confirmButtonText: 'Ok'
+				});
+			});
+	};
 
 	onPostDeleteHandler = postId => {
 		Swal.fire({
@@ -79,76 +155,6 @@ class Account extends Component {
 				Swal.fire('Information!', 'Your post is safe :)', 'info');
 			}
 		});
-	};
-
-	loadUserPosts = () => {
-		let graphqlQuery = {
-			query: `
-				query FetchUser($id: ID!) {
-					user(id: $id) {
-						createdAt
-						fullname
-						email
-						posts {
-							_id
-							title
-							slug
-						}
-						bio
-						avatar
-						work
-						location
-						socials {
-							github
-							website
-							linkedin
-							facebook
-							stackoverflow
-						}
-					}
-				}
-			`,
-			variables: {
-				id: this.props.userId
-			}
-		};
-
-		fetch(process.env.REACT_APP_BACKEND_URI, {
-			method: 'POST',
-			headers: {
-				Authorization: this.props.token,
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(graphqlQuery)
-		})
-			.then(res => {
-				return res.json();
-			})
-			.then(resData => {
-				if (resData.errors) {
-					throw new Error('Fetching user data failed!');
-				}
-
-				this.setState({
-					fullname: resData.data.user.fullname,
-					email: resData.data.user.email,
-					posts: resData.data.user.posts,
-					bio: resData.data.user.bio,
-					avatar: resData.data.user.avatar,
-					socials: resData.data.user.socials,
-					work: resData.data.user.work,
-					location: resData.data.user.location,
-					joined: formatDate(resData.data.user.createdAt)
-				});
-			})
-			.catch(error => {
-				Swal.fire({
-					title: 'Error!',
-					text: error.message,
-					type: 'error',
-					confirmButtonText: 'Ok'
-				});
-			});
 	};
 
 	render() {
