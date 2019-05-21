@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const PostItem = props => {
 	let imageTag = (
@@ -28,7 +28,12 @@ const PostItem = props => {
 						</h2>
 					</div>
 					<div className="card-post-teaser-meta">
-						<p>Published by: {props.post.user.fullname}</p>
+						<p>
+							Published by:{" "}
+							<Link to={"/profile/" + props.post.user.username}>
+								{props.post.user.fullname}
+							</Link>
+						</p>
 					</div>
 				</div>
 			</div>

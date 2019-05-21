@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import ReactPasswordStrength from 'react-password-strength';
+import React, { Component } from "react";
+import ReactPasswordStrength from "react-password-strength";
 
 class SignUp extends Component {
 	state = {
-		username: '',
-		email: '',
-		fullname: '',
-		password: '',
-		passwordScore: '',
+		username: "",
+		email: "",
+		fullname: "",
+		password: "",
+		passwordScore: "",
 		passwordValid: false
 	};
 
@@ -53,7 +53,7 @@ class SignUp extends Component {
 								id="username"
 								required
 								onChange={event =>
-									this.handleInputChanger(event, 'username')
+									this.handleInputChanger(event, "username")
 								}
 							/>
 						</div>
@@ -67,7 +67,7 @@ class SignUp extends Component {
 								id="email"
 								required
 								onChange={event =>
-									this.handleInputChanger(event, 'email')
+									this.handleInputChanger(event, "email")
 								}
 							/>
 						</div>
@@ -81,7 +81,7 @@ class SignUp extends Component {
 								id="fullname"
 								required
 								onChange={event =>
-									this.handleInputChanger(event, 'fullname')
+									this.handleInputChanger(event, "fullname")
 								}
 							/>
 						</div>
@@ -94,17 +94,17 @@ class SignUp extends Component {
 								minLength={8}
 								minScore={3}
 								scoreWords={[
-									'very weak',
-									'weak',
-									'good',
-									'strong',
-									'very strong'
+									"very weak",
+									"weak",
+									"good",
+									"strong",
+									"very strong"
 								]}
 								changeCallback={event =>
 									this.handleChange(event)
 								}
 								inputProps={{
-									name: 'password'
+									name: "password"
 								}}
 							/>
 						</div>

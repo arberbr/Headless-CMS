@@ -1,4 +1,4 @@
-const { buildSchema } = require('graphql');
+const { buildSchema } = require("graphql");
 
 module.exports = buildSchema(`
     type Post {
@@ -91,6 +91,7 @@ module.exports = buildSchema(`
         post(postSlug: String!) : Post!
         fetchEditPost(postId: ID!) : Post!
         user(id: ID!): User!
+        fetchUserByUsername(username: String!) : User!
         searchPosts(keyword: String!): PostData!
     }
 

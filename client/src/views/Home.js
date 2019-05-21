@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import Swal from 'sweetalert2';
+import React, { Component } from "react";
+import Swal from "sweetalert2";
 
-import PostItems from '../components/PostItems';
+import PostItems from "../components/PostItems";
 
 class Home extends Component {
 	state = {
-		fullname: '',
-		email: '',
+		fullname: "",
+		email: "",
 		posts: []
 	};
 
@@ -21,6 +21,7 @@ class Home extends Component {
 			query: `
 				query FetchUser($id: ID!) {
 					user(id: $id) {
+						username
 						fullname
 						email
 					}
@@ -32,10 +33,10 @@ class Home extends Component {
 		};
 
 		fetch(process.env.REACT_APP_BACKEND_URI, {
-			method: 'POST',
+			method: "POST",
 			headers: {
 				Authorization: this.props.token,
-				'Content-Type': 'application/json'
+				"Content-Type": "application/json"
 			},
 			body: JSON.stringify(graphqlQuery)
 		})
@@ -44,7 +45,7 @@ class Home extends Component {
 			})
 			.then(resData => {
 				if (resData.errors) {
-					throw new Error('Fetching user data failed!');
+					throw new Error("Fetching user data failed!");
 				}
 
 				this.setState({
@@ -54,10 +55,10 @@ class Home extends Component {
 			})
 			.catch(error => {
 				Swal.fire({
-					title: 'Error!',
+					title: "Error!",
 					text: error.message,
-					type: 'error',
-					confirmButtonText: 'Ok'
+					type: "error",
+					confirmButtonText: "Ok"
 				});
 			});
 	};
@@ -75,6 +76,7 @@ class Home extends Component {
 							slug
 							image
 							user {
+								username
 								fullname
 								avatar
 							}
@@ -86,10 +88,10 @@ class Home extends Component {
 		};
 
 		fetch(process.env.REACT_APP_BACKEND_URI, {
-			method: 'POST',
+			method: "POST",
 			headers: {
 				Authorization: this.props.token,
-				'Content-Type': 'application/json'
+				"Content-Type": "application/json"
 			},
 			body: JSON.stringify(graphqlQuery)
 		})
@@ -98,7 +100,7 @@ class Home extends Component {
 			})
 			.then(resData => {
 				if (resData.errors) {
-					throw new Error('Fetching Posts Failed!');
+					throw new Error("Fetching Posts Failed!");
 				}
 
 				this.setState({
@@ -107,10 +109,10 @@ class Home extends Component {
 			})
 			.catch(error => {
 				Swal.fire({
-					title: 'Error!',
+					title: "Error!",
 					text: error.message,
-					type: 'error',
-					confirmButtonText: 'Ok'
+					type: "error",
+					confirmButtonText: "Ok"
 				});
 			});
 	};
