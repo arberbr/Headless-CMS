@@ -4,13 +4,18 @@ import Swal from 'sweetalert2';
 import UserDetails from '../components/Profile/UserDetails';
 import UserPosts from '../components/Profile/UserPosts';
 
+import formatDate from '../utils/formatDate';
+
 class Account extends Component {
 	state = {
 		fullname: '',
 		email: '',
 		posts: [],
 		bio: '',
-		avatar: ''
+		avatar: '',
+		work: '',
+		location: '',
+		joined: ''
 	};
 
 	componentDidMount() {
@@ -81,6 +86,7 @@ class Account extends Component {
 			query: `
 				query FetchUser($id: ID!) {
 					user(id: $id) {
+						createdAt
 						fullname
 						email
 						posts {
@@ -90,8 +96,15 @@ class Account extends Component {
 						}
 						bio
 						avatar
-						github
-						website
+						work
+						location
+						socials {
+							github
+							website
+							linkedin
+							facebook
+							stackoverflow
+						}
 					}
 				}
 			`,
@@ -122,8 +135,10 @@ class Account extends Component {
 					posts: resData.data.user.posts,
 					bio: resData.data.user.bio,
 					avatar: resData.data.user.avatar,
-					github: resData.data.user.github,
-					website: resData.data.user.website
+					socials: resData.data.user.socials,
+					work: resData.data.user.work,
+					location: resData.data.user.location,
+					joined: formatDate(resData.data.user.createdAt)
 				});
 			})
 			.catch(error => {

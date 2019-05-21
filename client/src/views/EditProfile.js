@@ -8,8 +8,8 @@ class EditProfile extends Component {
 		fullname: '',
 		email: '',
 		bio: '',
-		github: '',
-		website: ''
+		work: '',
+		location: ''
 	};
 
 	componentDidMount() {
@@ -25,8 +25,8 @@ class EditProfile extends Component {
 						fullname
 						email
 						bio
-						github
-						website
+						work
+						location
 					}
 				}
 			`,
@@ -54,8 +54,8 @@ class EditProfile extends Component {
 					fullname: resData.data.user.fullname,
 					email: resData.data.user.email,
 					bio: resData.data.user.bio,
-					github: resData.data.user.github,
-					website: resData.data.user.website
+					work: resData.data.user.work,
+					location: resData.data.user.location
 				});
 			})
 			.catch(error => {
@@ -93,14 +93,24 @@ class EditProfile extends Component {
 
 		const graphqlQuery = {
 			query: `
-				mutation UpdateUser($userId: ID!, $fullname: String!, $email: String!, $bio: String, $github: String, $website: String) {
-					updateUser(userId: $userId, userInput: {
-						fullname: $fullname,
-						email: $email,
-						bio: $bio,
-						github: $github,
-						website: $website
-					}) {
+				mutation UpdateUser(
+					$userId: ID!,
+					$fullname: String!,
+					$email: String!,
+					$bio: String,
+					$work: String,
+					$location: String
+				) {
+					updateUser(
+						userId: $userId,
+						userInput: {
+							fullname: $fullname,
+							email: $email,
+							bio: $bio,
+							work: $work,
+							location: $location
+						}
+					) {
 						fullname
 						email
 					}
@@ -111,8 +121,8 @@ class EditProfile extends Component {
 				fullname: userData.fullname,
 				email: userData.email,
 				bio: userData.bio,
-				github: userData.github,
-				website: userData.website
+				work: userData.work,
+				location: userData.location
 			}
 		};
 
@@ -169,8 +179,8 @@ class EditProfile extends Component {
 								fullname: this.state.fullname,
 								email: this.state.email,
 								bio: this.state.bio,
-								github: this.state.github,
-								website: this.state.website
+								work: this.state.work,
+								location: this.state.location
 							})
 						}
 					>
@@ -216,28 +226,28 @@ class EditProfile extends Component {
 							/>
 						</div>
 						<div>
-							<label htmlFor="github">Github</label>
+							<label htmlFor="work">Work</label>
 							<input
-								type="url"
-								name="github"
-								id="github"
-								placeholder="https://github.com/<username>"
-								defaultValue={this.state.github}
+								type="text"
+								name="work"
+								id="work"
+								required
+								defaultValue={this.state.work}
 								onChange={event =>
-									this.handleInputChanger(event, 'github')
+									this.handleInputChanger(event, 'work')
 								}
 							/>
 						</div>
 						<div>
-							<label htmlFor="website">Website</label>
+							<label htmlFor="location">Location</label>
 							<input
-								type="url"
-								name="website"
-								id="website"
-								placeholder="https://example.com"
-								defaultValue={this.state.website}
+								type="text"
+								name="location"
+								id="location"
+								required
+								defaultValue={this.state.location}
 								onChange={event =>
-									this.handleInputChanger(event, 'website')
+									this.handleInputChanger(event, 'location')
 								}
 							/>
 						</div>

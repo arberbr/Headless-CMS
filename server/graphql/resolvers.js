@@ -4,17 +4,25 @@ var gravatar = require('gravatar');
 
 const User = require('../models/user');
 const Post = require('../models/post');
+const Social = require('../models/social');
 
 const slugify = require('../utils/slugify');
 
 module.exports = {
 	signup: async function(args, req) {
+		const username = args.userInput.username;
 		const email = args.userInput.email;
 		const fullname = args.userInput.fullname;
 		const password = args.userInput.password;
 
-		const existingUser = await User.findOne({ email: email });
-		if (existingUser) {
+		const checkUserName = await User.findOne({ username: username });
+		if (checkUserName) {
+			const error = new Error('User already exists!');
+			throw error;
+		}
+
+		const checkUserEmail = await User.findOne({ email: email });
+		if (checkUserEmail) {
 			const error = new Error('User already exists!');
 			throw error;
 		}
@@ -28,6 +36,7 @@ module.exports = {
 		const fetchedAvatar = await gravatar.url(email);
 
 		const user = new User({
+			username: username,
 			email: email,
 			fullname: fullname,
 			password: hashedPassword,
@@ -268,16 +277,12 @@ module.exports = {
 	},
 
 	user: async function(args, req) {
-		if (!req.isAuth) {
-			const error = new Error('Not Authenticated!');
-			error.code = 401;
-			throw error;
-		}
-
-		const user = await User.findById(req.userId).populate({
-			path: 'posts',
-			options: { sort: '-createdAt' }
-		});
+		const user = await User.findById(req.userId)
+			.populate({
+				path: 'posts',
+				options: { sort: '-createdAt' }
+			})
+			.populate('socials');
 		if (!user) {
 			const error = new Error('No user was found!');
 			error.statusCode = 404;
@@ -286,7 +291,9 @@ module.exports = {
 
 		return {
 			...user._doc,
-			_id: user._id.toString()
+			_id: user._id.toString(),
+			createdAt: user.createdAt.toISOString(),
+			updatedAt: user.updatedAt.toISOString()
 		};
 	},
 
@@ -324,8 +331,8 @@ module.exports = {
 		user.fullname = args.userInput.fullname;
 		user.email = args.userInput.email;
 		user.bio = args.userInput.bio;
-		user.github = args.userInput.github;
-		user.website = args.userInput.website;
+		user.work = args.userInput.work;
+		user.location = args.userInput.location;
 
 		const updatedUser = await user.save();
 
@@ -333,6 +340,18 @@ module.exports = {
 			...updatedUser._doc,
 			_id: updatedUser._id.toString()
 		};
+	},
+
+	updateUserSocials: async function(args, req) {
+		if (!req.isAuth) {
+			const error = new Error('Not Authenticated!');
+			error.code = 401;
+			throw error;
+		}
+
+		console.log('WIP');
+
+		return;
 	},
 
 	searchPosts: async function(args, req) {

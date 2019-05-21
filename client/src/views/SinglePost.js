@@ -35,8 +35,13 @@ class SinglePost extends Component {
 							fullname
 							bio
 							avatar
-							github
-							website
+							socials {
+								github
+								website
+								linkedin
+								facebook
+								stackoverflow
+							}
                         }
                         createdAt
                     }

@@ -16,6 +16,7 @@ import SinglePost from './views/SinglePost';
 
 import Account from './views/Account';
 import EditProfile from './views/EditProfile';
+import UserSocials from './views/UserSocials';
 import ChangePassword from './views/ChangePassword';
 
 import SearchResults from './views/SearchResults';
@@ -166,8 +167,9 @@ class App extends Component {
 
 		const graphqlQuery = {
 			query: `
-				mutation CreateUser($email: String!, $fullname: String!, $password: String!) {
+				mutation CreateUser($username: String!, $email: String!, $fullname: String!, $password: String!) {
 					signup(userInput: {
+						username: $username,
       					email: $email,
      	 				fullname: $fullname,
       					password: $password
@@ -179,6 +181,7 @@ class App extends Component {
 				}
 			`,
 			variables: {
+				username: authData.username,
 				email: authData.email,
 				fullname: authData.fullname,
 				password: authData.password
@@ -302,6 +305,17 @@ class App extends Component {
 						exact
 						render={props => (
 							<EditProfile
+								{...props}
+								userId={this.state.userId}
+								token={this.state.token}
+							/>
+						)}
+					/>
+					<Route
+						path="/user-socials"
+						exact
+						render={props => (
+							<UserSocials
 								{...props}
 								userId={this.state.userId}
 								token={this.state.token}

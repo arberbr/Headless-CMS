@@ -18,6 +18,22 @@ const UserPosts = props => {
 		''
 	);
 
+	let userWork = props.user.work ? (
+		<p>
+			<b>Work:</b> {props.user.work}
+		</p>
+	) : (
+		''
+	);
+
+	let userLocation = props.user.location ? (
+		<p>
+			<b>Location:</b> {props.user.location}
+		</p>
+	) : (
+		''
+	);
+
 	return (
 		<div className="card">
 			<h1>{props.user.fullname}</h1>
@@ -32,6 +48,11 @@ const UserPosts = props => {
 					<p>
 						<b>Bio:</b> {props.user.bio}
 					</p>
+					{userWork}
+					{userLocation}
+					<p>
+						<b>Joined:</b> {props.user.joined}
+					</p>
 					<p className="user-socials">
 						{userGithub} {userWebsite}
 					</p>
@@ -39,7 +60,8 @@ const UserPosts = props => {
 			</div>
 			<div className="user-actions">
 				<Link to="/edit-profile">edit profile</Link> -{' '}
-				<Link to="/change-password">change password</Link>
+				<Link to="/change-password">change password</Link> -{' '}
+				<Link to="/user-socials">user socials</Link>
 			</div>
 		</div>
 	);

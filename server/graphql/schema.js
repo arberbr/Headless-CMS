@@ -12,16 +12,28 @@ module.exports = buildSchema(`
         createdAt: String!
     }
 
+    type Social {
+        user: User!
+        github: String
+        website: String
+        facebook: String
+        linkedin: String
+        stackoverflow: String
+    }
+
     type User {
         _id: ID!
+        username: String!
         fullname: String!
         email: String!
         password: String
-        posts: [Post]!
         bio: String
-        github: String
-        website: String
         avatar: String
+        work: String
+        location: String
+        posts: [Post]!
+        socials: Social
+        createdAt: String
     }
 
     type AuthData {
@@ -34,6 +46,7 @@ module.exports = buildSchema(`
     }
 
     input UserInputData {
+        username: String!
         email: String!
         fullname: String!
         password: String!
@@ -43,8 +56,8 @@ module.exports = buildSchema(`
         email: String!
         fullname: String!
         bio: String
-        github: String
-        website: String
+        work: String
+        location: String
     }
 
     input PostInputData {
@@ -54,12 +67,21 @@ module.exports = buildSchema(`
         image: String!
     }
 
+    input SocialInputData {
+        github: String
+        website: String
+        linkedin: String
+        facebook: String
+        stackoverflow: String
+    }
+
     type RootMutation {
         signup(userInput: UserInputData!) : User!
         createPost(postInput: PostInputData!) : Post!
         deletePost(postId: ID!) : Boolean
         updatePost(postId: ID!, postInput: PostInputData!) : Post!
         updateUser(userId: ID!, userInput: UserAccountData!) : User!
+        updateUserSocials(userId: ID, userSocials: SocialInputData) : User!
         changePassword(newPassword: String!) : Boolean
     }
 

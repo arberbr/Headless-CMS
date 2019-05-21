@@ -3,6 +3,7 @@ import ReactPasswordStrength from 'react-password-strength';
 
 class SignUp extends Component {
 	state = {
+		username: '',
 		email: '',
 		fullname: '',
 		password: '',
@@ -33,6 +34,7 @@ class SignUp extends Component {
 						action=""
 						onSubmit={event =>
 							this.props.onSignup(event, {
+								username: this.state.username,
 								email: this.state.email,
 								fullname: this.state.fullname,
 								password: this.state.password,
@@ -41,6 +43,20 @@ class SignUp extends Component {
 							})
 						}
 					>
+						<div>
+							<label htmlFor="username">
+								Username <span className="required">*</span>
+							</label>
+							<input
+								type="text"
+								name="username"
+								id="username"
+								required
+								onChange={event =>
+									this.handleInputChanger(event, 'username')
+								}
+							/>
+						</div>
 						<div>
 							<label htmlFor="email">
 								E-Mail <span className="required">*</span>
