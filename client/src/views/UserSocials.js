@@ -50,15 +50,23 @@ class UserSocials extends Component {
 					throw new Error('Could not fetch User Social Profiles!');
 				}
 
-				console.log(resData);
-
-				this.setState({
-					github: resData.data.user.socials.github,
-					website: resData.data.user.socials.website,
-					linkedin: resData.data.user.socials.linkedin,
-					facebook: resData.data.user.socials.facebook,
-					stackoverflow: resData.data.user.socials.stackoverflow
-				});
+				if (resData.data.user.socials) {
+					this.setState({
+						github: resData.data.user.socials.github,
+						website: resData.data.user.socials.website,
+						linkedin: resData.data.user.socials.linkedin,
+						facebook: resData.data.user.socials.facebook,
+						stackoverflow: resData.data.user.socials.stackoverflow
+					});
+				} else {
+					this.setState({
+						github: '',
+						website: '',
+						linkedin: '',
+						facebook: '',
+						stackoverflow: ''
+					});
+				}
 			})
 			.catch(error => {
 				Swal.fire({
@@ -161,7 +169,7 @@ class UserSocials extends Component {
 								type="url"
 								name="github"
 								id="github"
-								defaultValue={this.state.github}
+								value={this.state.github || ''}
 								onChange={event =>
 									this.handleInputChanger(event, 'github')
 								}
@@ -174,7 +182,7 @@ class UserSocials extends Component {
 								type="url"
 								name="website"
 								id="website"
-								defaultValue={this.state.website}
+								value={this.state.website || ''}
 								onChange={event =>
 									this.handleInputChanger(event, 'website')
 								}
@@ -186,7 +194,7 @@ class UserSocials extends Component {
 								type="url"
 								name="linkedin"
 								id="linkedin"
-								defaultValue={this.state.linkedin}
+								value={this.state.linkedin || ''}
 								onChange={event =>
 									this.handleInputChanger(event, 'linkedin')
 								}
@@ -198,7 +206,7 @@ class UserSocials extends Component {
 								type="url"
 								name="facebook"
 								id="facebook"
-								defaultValue={this.state.facebook}
+								value={this.state.facebook || ''}
 								onChange={event =>
 									this.handleInputChanger(event, 'facebook')
 								}
@@ -210,7 +218,7 @@ class UserSocials extends Component {
 								type="url"
 								name="stackoverflow"
 								id="stackoverflow"
-								defaultValue={this.state.stackoverflow}
+								value={this.state.stackoverflow || ''}
 								onChange={event =>
 									this.handleInputChanger(
 										event,

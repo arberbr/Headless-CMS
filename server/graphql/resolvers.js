@@ -362,17 +362,16 @@ module.exports = {
 			throw error;
 		}
 
-		// TODO: Logic to handle user social profile saving
 		try {
 			const socials = await Social.findOneAndUpdate(
 				{ user: req.userId },
 				{
 					$set: {
-						github: args.userSocials.github,
-						website: args.userSocials.website,
-						linkedin: args.userSocials.linkedin,
-						facebook: args.userSocials.facebook,
-						stackoverflow: args.userSocials.stackoverflow
+						github: args.userSocials.github || '',
+						website: args.userSocials.website || '',
+						linkedin: args.userSocials.linkedin || '',
+						facebook: args.userSocials.facebook || '',
+						stackoverflow: args.userSocials.stackoverflow || ''
 					}
 				},
 				{ upsert: true }

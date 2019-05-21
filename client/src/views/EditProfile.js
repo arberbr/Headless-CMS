@@ -193,7 +193,7 @@ class EditProfile extends Component {
 								name="fullname"
 								id="fullname"
 								required
-								defaultValue={this.state.fullname}
+								value={this.state.fullname || ''}
 								onChange={event =>
 									this.handleInputChanger(event, 'fullname')
 								}
@@ -208,7 +208,7 @@ class EditProfile extends Component {
 								name="email"
 								id="email"
 								required
-								defaultValue={this.state.email}
+								value={this.state.email || ''}
 								onChange={event =>
 									this.handleInputChanger(event, 'email')
 								}
@@ -219,7 +219,7 @@ class EditProfile extends Component {
 							<textarea
 								name="bio"
 								id="bio"
-								value={this.state.bio}
+								value={this.state.bio || ''}
 								onChange={event =>
 									this.handleInputChanger(event, 'bio')
 								}
@@ -231,8 +231,7 @@ class EditProfile extends Component {
 								type="text"
 								name="work"
 								id="work"
-								required
-								defaultValue={this.state.work}
+								value={this.state.work || ''}
 								onChange={event =>
 									this.handleInputChanger(event, 'work')
 								}
@@ -244,8 +243,7 @@ class EditProfile extends Component {
 								type="text"
 								name="location"
 								id="location"
-								required
-								defaultValue={this.state.location}
+								value={this.state.location || ''}
 								onChange={event =>
 									this.handleInputChanger(event, 'location')
 								}
