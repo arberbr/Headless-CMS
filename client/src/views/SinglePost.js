@@ -26,7 +26,10 @@ class SinglePost extends Component {
 	componentDidMount() {
 		const postSlug = this.props.match.params.postSlug;
 		if (!postSlug) return;
+		this.loadSinglePost(postSlug);
+	}
 
+	loadSinglePost = postSlug => {
 		const graphqlQuery = {
 			query: `
                 query FetchPost($postSlug: String!) {
@@ -99,7 +102,7 @@ class SinglePost extends Component {
 					confirmButtonText: 'Ok'
 				});
 			});
-	}
+	};
 
 	render() {
 		let userGithub = this.state.socials.github ? (

@@ -1,18 +1,28 @@
-import React, { Component } from "react";
-import Swal from "sweetalert2";
+import React, { Component } from 'react';
+import Swal from 'sweetalert2';
+
+import AccountData from '../components/Profile/AccountData';
+
+import formatDate from '../utils/formatDate';
 
 class Profile extends Component {
 	state = {
-		username: "",
-		fullname: "",
-		email: "",
-		bio: "",
-		avatar: "",
-		work: "",
-		location: "",
-		joined: "",
+		fullname: '',
+		email: '',
 		posts: [],
-		socials: ""
+		bio: '',
+		avatar: '',
+		work: '',
+		location: '',
+		socials: {
+			github: '',
+			website: '',
+			linkedin: '',
+			facebook: '',
+			stackoverflow: ''
+		},
+		joined: '',
+		finishedLoading: false
 	};
 
 	componentDidMount() {
@@ -54,10 +64,10 @@ class Profile extends Component {
 		};
 
 		fetch(process.env.REACT_APP_BACKEND_URI, {
-			method: "POST",
+			method: 'POST',
 			headers: {
 				Authorization: this.props.token,
-				"Content-Type": "application/json"
+				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(graphqlQuery)
 		})
@@ -66,10 +76,8 @@ class Profile extends Component {
 			})
 			.then(resData => {
 				if (resData.errors) {
-					throw new Error("Fetching user data failed!");
+					throw new Error('Fetching user data failed!');
 				}
-
-				console.log(resData);
 
 				this.setState({
 					username: resData.data.fetchUserByUsername.username,
@@ -79,27 +87,32 @@ class Profile extends Component {
 					avatar: resData.data.fetchUserByUsername.avatar,
 					work: resData.data.fetchUserByUsername.work,
 					location: resData.data.fetchUserByUsername.location,
-					joined: resData.data.fetchUserByUsername.createdAt,
+					joined: formatDate(
+						resData.data.fetchUserByUsername.createdAt
+					),
 					posts: resData.data.fetchUserByUsername.posts,
-					socials: resData.data.fetchUserByUsername.socials
+					socials: resData.data.fetchUserByUsername.socials,
+					finishedLoading: true
 				});
 			})
 			.catch(error => {
 				Swal.fire({
-					title: "Error!",
+					title: 'Error!',
 					text: error.message,
-					type: "error",
-					confirmButtonText: "Ok"
+					type: 'error',
+					confirmButtonText: 'Ok'
 				});
 			});
 	};
 
 	render() {
+		let accountData = '';
+		if (this.state.finishedLoading) {
+			accountData = <AccountData user={this.state} />;
+		}
 		return (
 			<div className="page-profile">
-				<div className="card">
-					<h1>Profile</h1>
-				</div>
+				<div className="card">{accountData}</div>
 			</div>
 		);
 	}
