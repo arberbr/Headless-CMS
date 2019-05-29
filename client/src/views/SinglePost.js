@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import Swal from "sweetalert2";
+import React, { Component } from 'react';
+import Swal from 'sweetalert2';
 
-import timeToRead from "../utils/timeToRead";
-import formatDate from "../utils/formatDate";
+import timeToRead from '../utils/timeToRead';
+import formatDate from '../utils/formatDate';
 
 class SinglePost extends Component {
 	state = {
-		title: "",
-		excerpt: "",
-		content: "",
-		image: "",
-		userFullName: "",
-		userBio: "",
-		userAvatar: "",
-		createdAt: "",
+		title: '',
+		excerpt: '',
+		content: '',
+		image: '',
+		userFullName: '',
+		userBio: '',
+		userAvatar: '',
+		createdAt: '',
 		socials: {
-			github: "",
-			website: "",
-			linkedin: "",
-			facebook: "",
-			stackoverflow: ""
+			github: '',
+			website: '',
+			linkedin: '',
+			facebook: '',
+			stackoverflow: ''
 		}
 	};
 
@@ -58,9 +58,9 @@ class SinglePost extends Component {
 		};
 
 		fetch(process.env.REACT_APP_BACKEND_URI, {
-			method: "POST",
+			method: 'POST',
 			headers: {
-				"Content-Type": "application/json",
+				'Content-Type': 'application/json',
 				Authorization: this.props.token
 			},
 			body: JSON.stringify(graphqlQuery)
@@ -70,15 +70,13 @@ class SinglePost extends Component {
 			})
 			.then(resData => {
 				if (resData.errors) {
-					throw new Error("Fetching Post Failed!");
+					throw new Error('Fetching Post Failed!');
 				}
 
 				const formattedDate = formatDate(resData.data.post.createdAt);
 				if (!formattedDate) {
-					throw new Error("Could not format date!");
+					throw new Error('Could not format date!');
 				}
-
-				console.log(resData.data);
 
 				this.setState({
 					title: resData.data.post.title,
@@ -95,10 +93,10 @@ class SinglePost extends Component {
 			})
 			.catch(error => {
 				Swal.fire({
-					title: "Error!",
+					title: 'Error!',
 					text: error.message,
-					type: "error",
-					confirmButtonText: "Ok"
+					type: 'error',
+					confirmButtonText: 'Ok'
 				});
 			});
 	}
@@ -114,7 +112,7 @@ class SinglePost extends Component {
 				<span className="fa fa-github" />
 			</a>
 		) : (
-			""
+			''
 		);
 
 		let userWebsite = this.state.socials.website ? (
@@ -127,7 +125,7 @@ class SinglePost extends Component {
 				<span className="fa fa-globe" />
 			</a>
 		) : (
-			""
+			''
 		);
 
 		let userLinkedIn = this.state.socials.linkedin ? (
@@ -140,7 +138,7 @@ class SinglePost extends Component {
 				<span className="fa fa-linkedin" />
 			</a>
 		) : (
-			""
+			''
 		);
 
 		let userFacebook = this.state.socials.facebook ? (
@@ -153,7 +151,7 @@ class SinglePost extends Component {
 				<span className="fa fa-facebook" />
 			</a>
 		) : (
-			""
+			''
 		);
 
 		let userStackOverflow = this.state.socials.stackoverflow ? (
@@ -166,7 +164,7 @@ class SinglePost extends Component {
 				<span className="fa fa-stack-overflow" />
 			</a>
 		) : (
-			""
+			''
 		);
 
 		return (
@@ -202,7 +200,7 @@ class SinglePost extends Component {
 							<h4>{this.state.userFullName}</h4>
 							<p>{this.state.userBio}</p>
 							<p className="user-socials">
-								{userGithub} {userWebsite} {userLinkedIn}{" "}
+								{userGithub} {userWebsite} {userLinkedIn}{' '}
 								{userFacebook} {userStackOverflow}
 							</p>
 						</div>
