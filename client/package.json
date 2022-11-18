@@ -13,7 +13,7 @@
 		"react-password-strength": "^2.4.0",
 		"react-router": "^5.2.0",
 		"react-router-dom": "^5.2.0",
-		"react-scripts": "^3.4.4",
+		"react-scripts": "^5.0.1",
 		"sweetalert2": "^8.10.5"
 	},
 	"scripts": {
